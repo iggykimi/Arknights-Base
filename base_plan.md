@@ -1,85 +1,70 @@
-# Plan de base (layout 2-4-3, roster actual)
+# Plan de base (2-4-3, roster actual)
 
-## Control Center (5+5)
-- Shift A (morale drain): Młynar, Dobermann, Scavenger, Projekt Red, Heavyrain.
-- Shift B (buffers FAC/TP): Wang, Hoshiguma Alter, Yato Alter, Kal'tsit, Amiya.
+Generado con `python -m riic` a partir de `Collection.txt`, `Arknights Base Combo Guide.xlsx` y los datos del juego EN (las habilidades que la guía no lista). No editar a mano: cambia el roster o los supuestos y vuelve a generarlo.
 
-## Factories (4 x 3)
-- FAC1 (Gold): Gravel, Haze, Spot.
-- FAC2 (Gold): Purestream, Warmy, Almond.
-- FAC3 (EXP): Vermeil, Click, Ceobe.
-- FAC4 (General): Mizuki, Jessica, Vanilla.
+El turno A es la mejor asignación posible; el turno B es la mejor con los operadores que quedan, para rotar cada 12 h. «Horas» es lo que aguanta el operador que antes se queda sin moral (24 de moral, CC lvl 5).
 
-## Trading Posts (2 x 3)
-- TP1 (LMD alto): Shamare, Tequila, Paprika.
-- TP2 (Proviso, lvl 2): Proviso, Mr.Nothing, Vigil.
+## Turno A
 
-## Power Plants (3 x 1)
-- PP1: Greyy Alter.
-- PP2: Blaze Alter.
-- PP3: Lava Alter.
+| Instalación | Operadores | Producto | Productividad | Por día | Horas |
+|---|---|---|---|---|---|
+| CC | Amiya, Kal'tsit, Młynar, Wiš'adel, Coldshot | — | — | — | 36.9 |
+| FAC1 | Ceobe, Purestream, Vermeil | Gold | +100.8% | 40 barras | 53.3 |
+| FAC2 | Dorothy, Gravel, Spot | Gold | +100.0% | 40 barras | 53.3 |
+| FAC3 | Mizuki, Steward, Vanilla | Gold | +95.0% | 39 barras | 53.3 |
+| FAC4 | Crownslayer, Tragodia, Vigna | EXP | +105.0% | 16.400 EXP | 53.3 |
+| TP1 | Archetto, Hoederer, Proviso | LMD | +187.1% | 29.469 LMD | 53.3 |
+| TP2 | Closure, Lappland, Texas | LMD | +116.3% | 22.200 LMD | 32.0 |
+| PP1 | Greyy Alter | drones | +28.0% | — | 53.3 |
+| PP2 | Blaze Alter | drones | +25.0% | — | 53.3 |
+| PP3 | Goldenglow | drones | +25.0% | — | 53.3 |
+| RR | Ch'en Alter 2, Ines | pistas | +130.5% | — | 53.3 |
+| HR | Penance | contacto | +55.0% | — | 25.3 |
 
-## Reception Room (2 x 1)
-- RR1: Sankta Miksaparato.
-- RR2: Ines.
+- **LMD/día:** 63.162
+- **EXP/día:** 16.400
+- **Oro:** 119.2 barras/día fabricadas, 118.9 pedidas por los TP (drones incluidos)
+- **Drones:** +78% de recuperación, al TP que más LMD da
 
-## Workshop (1)
-- WS: Kal'tsit Alter.
+## Turno B
 
-## Office (1)
-- HR: Penance.
+| Instalación | Operadores | Producto | Productividad | Por día | Horas |
+|---|---|---|---|---|---|
+| CC | Paprika, Mon3tr, Dobermann, Flametail, Heavyrain | — | — | — | 43.6 |
+| FAC1 | Aroma, Fang, Haze | Gold | +83.8% | 37 barras | 26.7 |
+| FAC2 | Almond, Kroos, Popukar | Gold | +77.5% | 36 barras | 24.0 |
+| FAC3 | Bena, Bubble, Snow Hunter | Gold | +66.0% | 33 barras | 26.7 |
+| FAC4 | Jessica, Perfumer, Totter | EXP | +82.5% | 14.600 EXP | 36.9 |
+| TP1 | Mitm, Shamare, Tequila | LMD | +120.1% | 22.592 LMD | 26.7 |
+| TP2 | Midnight, Mousse, Quartz | LMD | +104.0% | 20.942 LMD | 36.9 |
+| PP1 | Greyy | drones | +25.0% | — | 32.0 |
+| PP2 | Indigo | drones | +20.0% | — | 32.0 |
+| PP3 | Liskarm | drones | +20.0% | — | 32.0 |
+| RR | Typhon, Vigil | pistas | +105.0% | — | 32.0 |
+| HR | Haruka | contacto | +50.0% | — | 32.0 |
 
-## Training Room (1)
-- TR: Logos.
+- **LMD/día:** 50.876
+- **EXP/día:** 14.600
+- **Oro:** 105.5 barras/día fabricadas, 101.8 pedidas por los TP (drones incluidos)
+- **Drones:** +65% de recuperación, al TP que más LMD da
 
-## Dorms (4 x 2)
-- D1: Coldshot + Lumen.
-- D2: Saileach + Entelechia.
-- D3: Honeyberry + Durin.
-- D4: Gracebearer + Bobbing.
+## Fijos
 
-## Recycling Station (1)
-- RS: vacío (sin workers owned).
+- **TR (entrenador):** Logos
+- **WS:** Kal'tsit Alter
+- **DORM1:** Entelechia (+0.30 AoE) + Conviction (+0.70 ST); 3 plazas para descansar
+- **DORM2:** Durin (+0.25 AoE) + Gracebearer (+0.70 ST); 3 plazas para descansar
+- **DORM3:** Lumen (+0.25 AoE) + Saileach (+0.70 ST); 3 plazas para descansar
+- **DORM4:** Ambriel (+0.20 AoE) + Czerny (+0.65 ST); 3 plazas para descansar
+- **Activity Room:** cualquiera; solo da confianza, no produce.
 
-## Activity Room (1-2)
-- AR1: Kal'tsit·Esperanta.
-- AR2: Viy.
+## Supuestos
 
-## Rotaciones
-- CC: Shift A/B 12h.
-- FAC/TP/PP: 12h o 24h según moral (Shift A reduce MD).
-- DORM: recuperación para operadores de alto drain (Gladiia, etc.).
-
-## Notas
-- Wang en CC Shift B; no usar en TR.
-- Kal'tsit (base) en CC; Kal'tsit Alter en WS (distinto).
-- Purestream en FAC2 (no en PP).
-- Penance en HR; no en DORM.
-- Viy y Crackborne disponibles para trust en Activity Room.
-"
-
-## Métricas estimadas (aprox., basadas en % del Excel)
-
-| Instalación | Operadores | Buff estimado | Nota |
-|---|---|---|---|
-| FAC1 Gold | Gravel, Haze, Spot | +95% Gold | Metalwork (3x30-35%) |
-| FAC2 Gold | Purestream, Warmy, Almond | +75-115% Gold | Purestream depende de TP count |
-| FAC3 EXP | Vermeil, Click, Ceobe | +~60% EXP | Vermeil recycling por CAP |
-| FAC4 General | Mizuki, Jessica, Vanilla | +90% (Standard) | Mizuki +5% por Standard |
-| TP1 | Shamare, Tequila, Paprika | +138% LMD | Tequila mejora órdenes 4-gold |
-| TP2 | Proviso, Mr.Nothing, Vigil | +~150% LMD | Proviso manipula 2-3 gold (lvl 2) |
-| PP1-3 | Greyy Alter, Blaze Alter, Lava Alter | +65% Drone recovery | Afecta productividad FAC/TP |
-| RR1-2 | S.Miksa, Ines | +109% Clue speed | Avg 12h |
-| WS | Kal'tsit Alter | +80% Byproduct | General |
-| HR | Penance | +50% Contact speed | - |
-| TR | Logos | +30% Training speed | Casters/Supporters |
-| DORM | Coldshot+Lumen, Saileach+Entelechia, Honeyberry+Durin, Gracebearer+Bobbing | ~0.8-1.2 MR | Recuperación moral |
-
-**Comparación global (layout 2-4-3, lvl 3):**
-- LMD/día: dominado por TP1+TP2 (Shamare/Proviso) → estimado muy alto (top tier).
-- EXP/día: FAC3+FAC4 → +~150% EXP combinado.
-- Gold: FAC1+FAC2 → +~170-210% Gold.
-- Drones: +65% recovery → mejora productividad FAC/TP.
-- Clues: +109% → rápido completar RR.
-
-*Valores son estimaciones basadas en % de skills; para cifras exactas usar calculadora (PeterYR/Optima).*
+- Instalaciones a nivel máximo, DORMs a lvl 5 (20 niveles), Office lvl 3, ambiente >4k (+15% RR).
+- 1 EXP vale 1 LMD (CE-5 y LS-5 dan lo mismo por cordura). `--exp-weight` lo cambia.
+- Pedidos lvl 3: 30/50/20% de 2/3/4 oros, 500 LMD por oro (TP!E45). Proviso E2 ×1.5517 (TP!J193); Closure: 1200 LMD por 2 oros en 144 min (NEW!F23).
+- Drones: 10% de recuperación ≈ 5% de productividad (PP!B5), todos al mejor TP.
+- Rampas (Ceobe, Fang, Kroos, Ines, Spuria): media de las primeras 12 h, como el Excel.
+- Greyy Alter: 23% (+1% por cada 10 de capacidad de drones; 235 en EN, PP!B65).
+- Dawnstreak = Ch'en Alter 2 (char_1050_chen3), comprobado con los datos del juego.
+- Texas solo da productividad con Lappland en el mismo TP (+65%, «Feud» en el juego).
