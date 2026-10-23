@@ -83,9 +83,19 @@ _PCT = re.compile(
     r"(?P<kind>Gold|EXP|Orundum|PP|HR|RR|byproduct rate|Speed)?"
     r"(?: \((?P<tag>[^)]+)\))?$"
 )
+# "+20% ramp to +25% (+1% per hour)": counted as its first-12 h mean, like the guide.
+_RAMP = re.compile(
+    r"^\+(?P<a>[\d/]+)% ?(?P<kind>Gold|EXP|PP|RR)? ramp to \+(?P<b>[\d/]+)% "
+    r"\(\+(?P<r>\d+)% per hour\)$"
+)
 _CAP = re.compile(r"^(?P<v>[+-]\d+(?:/\d+)*) CAP(?: (?P<prod>EXP|Gold))?$")
 _MD = re.compile(r"^(?P<v>[+-]\d*\.?\d+(?:/\d*\.?\d+)*) self MD$")
 _MR = re.compile(r"^(?P<v>[+-]\d*\.?\d+(?:/\d*\.?\d+)*) (?P<kind>ST|AoE|self) MR$")
+
+
+def ramp_avg(start: float, end: float, per_hour: float, hours: int = 12) -> float:
+    """Mean over the first ``hours`` hours, counted per whole hour like the guide."""
+    return sum(min(end, start + per_hour * h) for h in range(hours)) / hours
 
 
 def _pick(values: str, index: int) -> float:
@@ -104,7 +114,10 @@ def parse_effect(body: str, index: int) -> Effect | None:
         atom = atom.strip().rstrip(".")
         if not atom:
             continue
-        if m := _PCT.match(atom):
+        if m := _RAMP.match(atom):
+            pct = ramp_avg(_pick(m["a"], index), _pick(m["b"], index), float(m["r"]))
+            unit = m["kind"]
+        elif m := _PCT.match(atom):
             pct = _pick(m["v"], index)
             unit = m["kind"]
             tag = m["tag"]

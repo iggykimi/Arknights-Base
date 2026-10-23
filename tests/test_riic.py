@@ -1,17 +1,19 @@
 """Checks against the real roster and workbook. Expected numbers come from the
 guide's own cells, cited next to each assertion."""
 
+import json
 import re
 from dataclasses import replace
 from pathlib import Path
 
 import pytest
 
+from riic import model
 from riic.excel import extract_skills, norm, operator_ids
-from riic.gamedata import download, fill_gaps, load_skills
+from riic.gamedata import ROOMS, clean, download, fill_gaps, load_skills, parse_description
 from riic.model import Context, Roster, Settings, cc_buffs, fac_pct, rr_pct, tp_result
-from riic.optimize import all_assigned, build_plan, plan_value
-from riic.roster import load_roster
+from riic.optimize import _production, all_assigned, build_plan, plan_value
+from riic.roster import Owned, load_roster
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -80,6 +82,8 @@ def test_guide_numbers_match_the_game(roster, guide_skills, game_skills):
     for s in guide_skills:
         if s.operator not in roster.owned or not s.effect or not s.effect.pct:
             continue
+        if "ramp" in s.text:
+            continue  # stored as a 12 h mean; test_model_matches_game_slots checks it
         text = game.get((s.operator, s.facility))
         if text is None:
             continue
@@ -96,6 +100,47 @@ def test_one_spelling_per_operator(skills):
     for s in skills:
         spellings.setdefault(norm(s.operator), set()).add(s.operator)
     assert {k: v for k, v in spellings.items() if len(v) > 1} == {}
+
+
+def test_model_matches_game_slots(roster):
+    """For every owned operator, the % the model uses equals the game's: per skill
+    slot, the best promotion reached replaces the lower ones and slots add up."""
+    folder = download(ROOT / ".cache" / "gamedata")
+    building = json.loads((folder / "building_data.json").read_text(encoding="utf-8"))
+    ids = {v: k for k, v in operator_ids(WORKBOOK).items()}
+    wrong, compared = [], 0
+    for op, o in roster.owned.items():
+        entry = building["chars"].get(ids.get(op, ""))
+        if not entry:
+            continue
+        found: dict[str, list] = {}
+        for slot in entry["buffChar"]:
+            reached = [
+                d for d in slot["buffData"]
+                if (int(str(d["cond"]["phase"])[-1]), d["cond"]["level"]) <= (o.elite, o.level or 1)
+            ]  # fmt: skip
+            if reached:
+                buff = building["buffs"][reached[-1]["buffId"]]
+                if (fac := ROOMS.get(buff["roomType"])) in ("FAC", "TP", "PP", "RR", "HR"):
+                    found.setdefault(fac, []).append(parse_description(clean(buff["description"])))
+        for fac, effects in found.items():
+            if None in effects or op in model.MODELLED.get(fac, ()):
+                continue  # conditional skills have their own formula and test
+            compared += 1
+            game = sorted(round(e.pct, 2) for e in effects if e.pct)
+            mine = sorted(round(e.pct, 2) for e in roster.effects(op, fac) if e.pct)
+            if game != mine:
+                wrong.append(f"{op} {fac}: game {game} model {mine}")
+    assert compared > 80
+    assert not wrong, "\n".join(wrong)
+
+
+def test_rule_names_exist(skills):
+    # "Greythroat" vs "GreyThroat" once kept a Smiley out of every plan.
+    known = {s.operator for s in skills}
+    groups = {"SMILEYS": model.SMILEYS, "BASEWIDE_MD": model.BASEWIDE_MD,
+              "CC_PRODUCTIVE": model.CC_PRODUCTIVE, **model.MODELLED}  # fmt: skip
+    assert {k: sorted(set(v) - known) for k, v in groups.items() if set(v) - known} == {}
 
 
 def test_game_data_fills_what_the_guide_leaves_out(roster):
@@ -139,6 +184,23 @@ def test_promoted_skills(roster, skills):
     assert tp_result(("Vigil",), r, ctx).pct == 3 + 40
 
 
+def test_guide_team_numbers(skills):
+    """Teams whose final number the guide publishes, with the promotions it assumes."""
+    elites = {"Bubble": 1, "Vulcan": 2, "Ceobe": 2, "Dorothy": 2, "Silence Alter": 2,
+              "Ptilopsis": 2, "Exusiai": 2, "Texas": 2, "Lappland": 2, "Exusiai Alter": 2,
+              "Archetto": 2, "Lemuen": 2, "Ch'en": 2, "Vigil": 2, "Ines": 2}  # fmt: skip
+    r = Roster({n: Owned(n, e, 90, 1) for n, e in elites.items()}, skills)
+    ctx = ctx_with((), r)
+    fac = fac_pct(("Bubble", "Vulcan", "Ceobe"), "Gold", r, ctx) - 3
+    assert 90 <= fac <= 95  # FAC!J94
+    assert fac_pct(("Dorothy", "Silence Alter", "Ptilopsis"), "Gold", r, ctx) - 3 == 95  # FAC!J166
+    assert tp_result(("Exusiai", "Texas", "Lappland"), r, ctx).pct - 3 == 100  # TP!J81
+    assert tp_result(("Exusiai Alter", "Archetto", "Lemuen"), r, ctx).pct - 3 == 115  # BIN!F1607
+    rr = Settings().rr_bonus
+    assert rr_pct(("Ch'en", "Vigil"), r, ctx) - rr == pytest.approx(102)  # RR!L27
+    assert rr_pct(("Ines", "Vigil"), r, ctx) - rr == pytest.approx(104.5)  # RR!L26
+
+
 def test_proviso_with_two_30_percent_workers(roster):
     # TP!N227: Proviso E2, lvl 3 TP, two 30% workers, Amiya in CC -> +153.79% added.
     ctx = ctx_with(("Amiya",), roster)
@@ -168,6 +230,12 @@ def test_reception_room(roster):
     # RR!B20: E2 6* = 5 + 5 + 16 + skill; Ines' 12 h average is 53.5% (RR!B65),
     # Vigil E1 43% (RR!D65); RR lvl 3 11% + ambience 15%.
     assert rr_pct(("Ines", "Vigil"), roster, ctx_with((), roster)) == pytest.approx(26 + 53.5 + 43)
+
+
+def test_fixed_gold_factories(roster):
+    s = Settings(gold_facs=2)
+    for facs, _ in _production(roster, [Context(s), Context(s)], set(roster.owned), [0, 0]):
+        assert sorted(p for _, p in facs) == ["EXP", "EXP", "Gold", "Gold"]
 
 
 def test_plan_end_to_end(roster):

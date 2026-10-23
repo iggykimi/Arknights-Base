@@ -12,7 +12,7 @@ import urllib.request
 from dataclasses import replace
 from pathlib import Path
 
-from .excel import Effect, Skill, extract_skills, operator_ids
+from .excel import Effect, Skill, extract_skills, operator_ids, ramp_avg
 
 COMMIT = "db6f9ef8046ad17dbebe3ff1d0dd88844a5bc78c"  # 2026-10-16, EN
 URL = "https://raw.githubusercontent.com/ArknightsAssets/ArknightsGamedata/{}/en/gamedata/excel/{}"
@@ -47,14 +47,39 @@ def clean(text: str) -> str:
     """Drop rich-text tags, the "When this Operator is assigned to X," lead and the
     "(Only the strongest effect ...)" notes."""
     text = re.sub(r"<[^>]*>", "", text or "")
-    text = re.sub(r"^When this Operator is assigned to [^,]*?(?:to process any material)?, ", "",
-                  text)  # fmt: skip
+    # Only the bare "assigned to <building>," lead: anything else ("and Gummy is in a
+    # Trading Post", "with Amiya", "if Ines is...") is a condition and must stay.
+    text = re.sub(
+        r"^When this Operator is assigned to (?:a|an|the) (?:Factory|Trading Post|Power Plant|"
+        r"Reception Room|Control Center|Dormitory|Workshop|HR Office|Training Room)"
+        r"(?: to process any material)?, ",
+        "",
+        text,
+    )
     return re.sub(r"\s*\([^)]*(?:strongest|most effective)[^)]*\)", "", text).strip()
+
+
+# The game's four ways of writing a ramp -> (start, per hour, end); counted as the
+# first-12 h mean, like the guide does.
+_RAMPS = [
+    ((r"(?:productivity|drone recovery rate is) \+(\d+)% in the first hour and thereafter "
+     r"\+(\d+)% per hour, up to \+(\d+)%"), lambda m: (m[1], m[2], m[3])),
+    (r"productivity per hour \+(\d+)%, up to \+(\d+)%", lambda m: ("0", m[1], m[2])),
+    ((r"Clue search speed increases by (\d+)%, then by another (\d+)% per hour, up to a "
+     r"maximum of (\d+)%"), lambda m: (m[1], m[2], m[3])),
+]  # fmt: skip
 
 
 def parse_description(text: str) -> Effect | None:
     """Simple skills only; anything with a condition returns None."""
     fields: dict = {}
+    for pattern, parts in _RAMPS:
+        if m := re.search(pattern, text):
+            start, per_hour, end = (float(x) for x in parts(m))
+            fields["pct"] = ramp_avg(start, end, per_hour)
+            text = (text[: m.start()] + text[m.end() :]).strip(" ,.")
+            if not text:
+                return Effect(**fields)
     for atom in re.split(r",? and |; furthermore, |, ", text.rstrip(".")):
         for pattern, build in _ATOMS:
             if m := re.match(pattern, atom.strip()):

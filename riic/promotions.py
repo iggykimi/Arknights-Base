@@ -2,7 +2,8 @@
 
 For every owned operator whose next promotion unlocks a CC, FAC, TP or PP skill,
 the whole plan (both shifts) is rebuilt with that operator promoted, and the
-gain is the change in daily LMD + EXP over the 12 h rotation.
+gain is the change in daily LMD + EXP over the 12 h rotation. The current plan
+stays a candidate, so a promotion never shows a loss it could not cause.
 """
 
 import argparse
@@ -14,23 +15,22 @@ from . import optimize
 from .excel import operator_ids
 from .gamedata import all_skills, download, rarities
 from .model import MODELLED, Roster, Settings
-from .optimize import build_plan, plan_value
+from .optimize import Plan, build_plan, plan_value
 from .roster import load_roster
 
 ROOT = Path(__file__).resolve().parent.parent
 PRODUCTIVE = ("CC", "FAC", "TP", "PP")
 OUT = "no entra en el plan"
 GAP = 1e-4  # comparing plans needs the solver closer to the optimum than one plan does
+TIE = 50  # LMD+EXP per day: below this a promotion changes nothing
 
 
 def max_elite(stars: int) -> int:
     return 0 if stars <= 2 else 1 if stars == 3 else 2
 
 
-def daily(r: Roster, s: Settings) -> tuple[float, float, dict[str, str]]:
+def daily(r: Roster, plan: Plan) -> tuple[float, float, dict[str, str]]:
     """(LMD, EXP) per day over a 12 h A/B rotation, and where each operator works."""
-    optimize.MIP_GAP = GAP  # per process: workers import a fresh module
-    plan = build_plan(r, s)
     a, b = plan_value(plan, r, plan.a), plan_value(plan, r, plan.b)
     where = {o: f"turno A {_place(plan.a, o)}" for o in plan.a.operators()}
     where |= {o: f"turno B {_place(plan.b, o)}" for o in plan.b.operators()}
@@ -69,10 +69,16 @@ def candidates(r: Roster, stars: dict[str, int]):
 
 
 def _run(job):
-    owned, skills, settings, op, target = job
+    owned, skills, settings, current, op, target = job
+    optimize.MIP_GAP = GAP  # per process: workers import a fresh module
     owned = dict(owned)
     owned[op] = replace(owned[op], elite=target, level=1)
-    lmd, exp, where = daily(Roster(owned, skills), settings)
+    r = Roster(owned, skills)
+    best = max(
+        (daily(r, build_plan(r, settings)), daily(r, current)),
+        key=lambda d: d[0] + d[1] * settings.exp_weight,
+    )
+    lmd, exp, where = best
     return op, target, lmd, exp, where.get(op, OUT)
 
 
@@ -89,32 +95,31 @@ def main() -> None:
     skills = all_skills(args.excel, args.cache)
     stars = rarities(download(args.cache), operator_ids(args.excel))
     r = Roster(load_roster(args.collection), skills)
-    base_lmd, base_exp, _ = daily(r, settings)
+    optimize.MIP_GAP = GAP
+    current = build_plan(r, settings)
+    base_lmd, base_exp, _ = daily(r, current)
     jobs = candidates(r, stars)
     print(f"{len(jobs)} promociones a probar")
 
     texts = {(op, t): new for op, t, new in jobs}
     with ProcessPoolExecutor(args.workers) as pool:
-        results = list(pool.map(_run, [(r.owned, skills, settings, op, t) for op, t, _ in jobs]))
+        args_ = [(r.owned, skills, settings, current, op, t) for op, t, _ in jobs]
+        results = list(pool.map(_run, args_))
 
     rows = []
     for op, target, lmd, exp, where in results:
         gain = (lmd - base_lmd) + (exp - base_exp) * settings.exp_weight
         rows.append((gain, op, target, lmd - base_lmd, exp - base_exp, where))
     rows.sort(reverse=True)
-    # An operator who stays out of the plan cannot change it: what moves is solver noise.
-    noise = max((abs(g) for g, *_, w in rows if w == OUT), default=0.0)
 
     lines = [
         "# Promociones que merecen la pena para la base",
         "",
         (
             "Generado con `python -m riic.promotions`. Cada fila rehace el plan entero (turnos A y B) "
-            "con ese operador promocionado y compara con el plan actual. Ganancia = LMD + EXP por día "
-            f"con rotación de 12 h. Ruido medido: ±{noise:.0f} (lo que se mueve el plan con "
-            "promociones de operadores que no llegan a usarse); por debajo, «(ruido)». Una "
-            "ganancia negativa sale porque el turno A se elige antes que el B: el promocionado "
-            "mejora A y le quita al B más de lo que A gana."
+            "con ese operador promocionado y compara con el plan actual, que sigue siendo una "
+            "opción. Ganancia = LMD + EXP por día con rotación de 12 h; por debajo de "
+            f"{TIE}, «(nada)»."
         ),
         "",
         f"Plan actual: {base_lmd:,.0f} LMD + {base_exp:,.0f} EXP al día.".replace(",", "."),
@@ -127,7 +132,7 @@ def main() -> None:
         unlocks = "; ".join(
             sorted({f"{s.facility} E{s.elite}: {s.text[:70]}" for s in texts[(op, target)]})
         )
-        mark = "" if gain > noise else " (ruido)"
+        mark = "" if gain >= TIE else " (nada)"
         lines.append(
             f"| {op} ({stars.get(op, '?')}★) | E{o.elite}→E{target} | {gain:+,.0f}{mark} "
             f"| {d_lmd:+,.0f} | {d_exp:+,.0f} | {where} | {unlocks} |".replace(",", ".")

@@ -36,7 +36,7 @@ Arene,0,DORM,1,,no,no,+0.7 self MR. Extra +0.05 self MR per other operator,DORM 
 Arene,0,WS,0,,si,no,+5% byproduct rate per operator with Morale <4/20 in DORMs,Special Material Crafters,WS!F38
 Arene,0,WS,1,,no,no,+5% byproduct rate per operator with Morale <4/20 in DORMs,Special Material Crafters,WS!F38
 Aroma,0,FAC,0,,si,numerico,"+25% Gold, +0.25 self MD",FAC (Above 30%),FAC!J241
-Aroma,0,FAC,2,,no,formula,+0% ramp to +20% (+2% per hour),FAC (Above 30%),FAC!J243
+Aroma,0,FAC,2,,no,numerico,+0% ramp to +20% (+2% per hour),FAC (Above 30%),FAC!J243
 Ascalon,2,CC,0,,si,formula,+5% Skill Mastery Speed,Trading Post Buffers,CC!L236
 Ascalon,2,CC,2,,si,formula,+7% to all TPs,Trading Post Buffers,CC!L238
 Ashlock,0,FAC,0,,si,numerico,+15/25% (Pinus Sylverstris),Highmore Team,FAC!H134
@@ -96,7 +96,7 @@ Catherine,0,WS,2,,no,no,reduces the Morale consumed by all formulas that cost 4 
 Cement,0,FAC,0,,si,numerico,+15% (Standard),Vermeil Team (Gold),FAC!L53
 Cement,0,FAC,2,,no,numerico,"+10 CAP, -0.25 self MD",Vermeil Team (Gold),FAC!L55
 Ceobe,2,FAC,0,,si,numerico,"+8 CAP, -0.25 self MD",Vermeil Team (EXP),FAC!L33
-Ceobe,2,FAC,2,,si,formula,+20% ramp to +25% (+1% per hour),Vermeil Team (EXP),FAC!L35
+Ceobe,2,FAC,2,,si,numerico,+20% ramp to +25% (+1% per hour),Vermeil Team (EXP),FAC!L35
 Ceylon,0,FAC,2,,no,numerico,+35% Orundum,Orundum Workers,FAC!L297
 Ceylon,0,WS,0,,si,numerico,+80% byproduct rate,Generic Elite Material Crafters,WS!B88
 Ch'en Alter 2,2,RR,0,,si,formula,Increases chance for missing clues,"RR (6* Operators, Conditional)",RR!L45
@@ -168,8 +168,8 @@ Ethan,2,DORM,1,,si,numerico,+0.75 self MR,DORM - Right side,DORM!F132
 Ethan,2,HR,0,,si,numerico,+40% HR,HR (40%),HR!D49
 Exusiai Alter,2,DORM,0,,si,numerico,+0.55 ST MR.,"DORM (0.55, Special Targets)",DORM!D55
 Exusiai Alter,2,DORM,2,,si,no,"If target is [Laterano] operator, +0.45 extra MR","DORM (0.55, Special Targets)",DORM!D55
-Exusiai Alter,2,TP,2,,si,no,"for every Laterano Operator in the same Trading Post, order acquisition efficiency +15%",,gamedata:trade_ord_spd_par[001]
-Fang,1,FAC,0,,si,formula,+20% ramp to +25% (+1% per hour),Reserve Op A1 Team,FAC!D198
+Exusiai Alter,2,TP,2,,si,formula,"for every Laterano Operator in the same Trading Post, order acquisition efficiency +15%",,gamedata:trade_ord_spd_par[001]
+Fang,1,FAC,0,,si,numerico,+20% ramp to +25% (+1% per hour),Reserve Op A1 Team,FAC!D198
 Fang,1,TP,1,,si,numerico,+30%,TP (25-30%),TP!R266
 Fang Alter,0,FAC,0,,si,numerico,+15% (Standard),Reserve Op A1 Team,FAC!B198
 Fang Alter,0,FAC,2,,no,formula,+10% per [A1] operator in the same FAC,Reserve Op A1 Team,FAC!B200
@@ -192,7 +192,7 @@ Frostleaf,0,FAC,1,,no,numerico,+30% EXP,FAC (30% and below),FAC!H283
 Gallus²,0,PP,0,,si,numerico,+10% PP,Robots,PP!P100
 Gallus²,0,PP,0,30,no,no,"If a [Robot] is in another PP, +5% PP",Robots,PP!P100
 Gavial,0,TR,0,,si,numerico,+30% Speed,Medic Trainers,TR!L182
-Gavial,0,TR,1,,no,no,Medic Operators' Specialization training speed +30%,,gamedata:train_spd&profession[070]
+Gavial,0,TR,1,,no,no,"When this Operator is assigned to be the Trainer in the Training Room, Medic Operators' Specialization training speed +30%",,gamedata:train_spd&profession[070]
 Gavial,0,WS,0,,si,numerico,+75% byproduct rate,Generic Elite Material Crafters,WS!J97
 Gitano,0,RR,1,,no,numerico,+25% RR,RR (4* Operators),RR!D101
 Gitano,0,TP,0,,si,numerico,"+25%, +1 CAP",TP (25-30%),TP!B281
@@ -209,7 +209,7 @@ Grani,0,TR,0,,si,numerico,+30/50% Speed,Vanguard Trainers,TR!F65
 Grani,0,TR,2,,no,numerico,+30/50% Speed,Vanguard Trainers,TR!F65
 Gravel,1,FAC,1,,si,numerico,+35% Gold (Metalwork),Bryophyta - Precious Metal Team,FAC!F86
 Gravel,1,WS,0,,si,numerico,the production rate of byproduct increases by 40%,General Crafters,gamedata:workshop_proc_probability[000]
-GreyThroat,0,CC,0,,si,no,increases Morale of all Operators in the Control Center by +0.05 per hour.,,gamedata:control_mp_cost[005]
+GreyThroat,0,CC,0,,si,formula,increases Morale of all Operators in the Control Center by +0.05 per hour.,,gamedata:control_mp_cost[005]
 GreyThroat,0,DORM,2,,no,numerico,self Morale recovered +0.7 per hour,,gamedata:dorm_rec_oneself[000]
 Greyy,0,PP,0,,si,numerico,+20% PP,"PP (20%, Simple)",PP!B72
 Greyy,0,WS,1,,no,numerico,the production rate of byproduct increases by 50%,General Crafters,gamedata:workshop_proc_probability[010]
@@ -257,7 +257,7 @@ Indigo,1,PP,1,,si,numerico,+10/15% PP,PP (Below 20%),PP!J84
 Indra,0,RR,0,,si,numerico,Clue search speed increases by 10%,,gamedata:meet_spd&team[000]
 Indra,0,RR,2,,no,no,Clue search speed increases by 10% and it's easier to obtain the clues of Glasgow,,gamedata:meet_spd&team[070]
 Ines,2,HR,0,,si,numerico,HR contacting speed +35%,,gamedata:hire_spd[001]
-Ines,2,RR,2,,si,formula,+20% RR ramp to +30% (+2% per hour),"RR (6* Operators, Simple)",RR!B60
+Ines,2,RR,2,,si,numerico,+20% RR ramp to +30% (+2% per hour),"RR (6* Operators, Simple)",RR!B60
 Iris,0,DORM,0,,si,no,"restores +0.1 Morale per hour to all Operators in that Dormitory. Additionally, for every level of the current Dormitory, 1 level of Dreamland",,gamedata:dorm_rec_bd_n1_n2[000]
 Iris,0,DORM,2,,no,no,+1 [PI] per current DORM level,Rosmontis/Ebenholz - Perception Information/Soundless Resonance Team,SPECIAL!R38
 Istina,0,RR,2,,no,no,Clue search speed increases by 10% and it's easier to obtain the clues of Ursus Student Self-government Group,,gamedata:meet_spd&team[050]
@@ -286,7 +286,7 @@ Kjera,0,RR,0,,si,numerico,Clue search speed increases by 10%,,gamedata:meet_spd&
 Kjera,0,RR,2,,no,no,Clue search speed increases by 10% and it's easier to obtain the clues of Karlan Trade,,gamedata:meet_spd&team[041]
 Kjera,0,RR,2,,no,no,"every time that a non-Karlan Trade clue is collected, the likelihood of obtaining Karlan Trade clues is increased (working time improves the likelihood)",,gamedata:meet_flag[040]
 Kroos,1,DORM,1,,si,numerico,self Morale recovered +0.7 per hour,,gamedata:dorm_rec_oneself[000]
-Kroos,1,FAC,0,,si,formula,+15% ramp to +25% (+2% per hour),Reserve Op A1 Team,FAC!F198
+Kroos,1,FAC,0,,si,numerico,+15% ramp to +25% (+2% per hour),Reserve Op A1 Team,FAC!F198
 Kroos Alter,1,CC,0,,si,no,-0.05 MD per [Alter] operator in CC,Alter Team,CC!D65
 Kroos Alter,1,TR,2,,no,no,+30% Speed. +45% extra Speed if training a Marksman,Sniper Trainers,TR!J129
 La Pluma,0,WS,0,,si,no,-1 Morale Cost for 2 Morale recipes,Skill Book Crafters,WS!N122
@@ -520,8 +520,8 @@ Specter,0,DORM,0,,si,numerico,self Morale recovered +0.7 per hour,,gamedata:dorm
 Specter,0,DORM,2,,no,numerico,self Morale recovered +0.85 per hour,,gamedata:dorm_rec_oneself[010]
 Spot,1,FAC,1,,si,numerico,+30% Gold (Metalwork),Bryophyta - Precious Metal Team,FAC!J86
 Spot,1,WS,0,,si,numerico,the production rate of byproduct increases by 50%,General Crafters,gamedata:workshop_proc_probability[010]
-Spuria,0,PP,0,,si,formula,+10/15% PP ramp to +15/20% (+1% per hour),PP (Below 20%),PP!B84
-Spuria,0,PP,2,,no,formula,+10/15% PP ramp to +15/20% (+1% per hour),PP (Below 20%),PP!B84
+Spuria,0,PP,0,,si,numerico,+10/15% PP ramp to +15/20% (+1% per hour),PP (Below 20%),PP!B84
+Spuria,0,PP,2,,no,numerico,+10/15% PP ramp to +15/20% (+1% per hour),PP (Below 20%),PP!B84
 Spuria,0,PP,2,,no,numerico,-0.3 self MD,PP (Below 20%),PP!B87
 Steward,1,FAC,1,,si,numerico,+25% (Standard),Mizuki - Standard Team,FAC!L156
 Steward,1,TP,0,,si,numerico,order limit +5 and Morale consumed per hour -0.25,,gamedata:trade_ord_limit&cost[000]

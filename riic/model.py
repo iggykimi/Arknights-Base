@@ -48,7 +48,7 @@ _BETTER_ORDERS = re.compile(r"better orders|higher-yield Precious Metal orders")
 
 # CC!B38:P43: "Smileys" (-0.05 MD in CC) that Młynar E2 applies base-wide.
 SMILEYS = {
-    "Młynar", "Dobermann", "Scavenger", "Projekt Red", "Nearl", "Greythroat",
+    "Młynar", "Dobermann", "Scavenger", "Projekt Red", "Nearl", "GreyThroat",
     "Heavyrain", "Coldshot", "Flametail", "Viviana", "Mon3tr", "Raidian",
 }  # fmt: skip
 # CC!F48:N48: -0.05 MD in FAC/TP/PP/RR/HR each, from CC (minimum promotion).
@@ -59,20 +59,24 @@ BSW = {"Jessica", "Vanilla", "Almond", "Liskarm", "Franka"}
 ELITE_OPS = {"Mantra", "Kal'tsit Alter", "Rosmontis", "Raidian", "Mechanist", "Logos",
              "Blaze", "Blaze Alter"}  # fmt: skip
 LGD = {"Ch'en", "Swire", "Hoshiguma", "Hoshiguma Alter"}  # CC!B198:F198
-A1 = {"Fang", "Kroos"}  # FAC!B197:F197, Reserve Op A1 partners
+# Game data teamId "reserve1"; Fang Alter herself is not in it (FAC!J188 checks).
+A1 = {"Fang", "Kroos", "Beagle", "Hibiscus", "Lava"}
 GLASGOW = {"Morgan", "Siege", "Vina Victoria", "Indra", "Dagda"}  # TP!B154:J154
+# Game data nationId "laterano" (Exusiai Alter herself is Lungmen).
+LATERANO = {"Ambriel", "Archetto", "Arene", "CONFESS-47", "Enforcer", "Executor",
+            "Executor Alter", "Fiammetta", "Insider", "Lemuen", "Mostima", "Plume",
+            "Sankta Miksaparato", "Spuria", "Virtuosa"}  # fmt: skip
 
 LAYOUTS = {"243": (2, 4, 3), "252": (2, 5, 2), "333": (3, 3, 3), "342": (3, 4, 2)}
 
 # Conditional skills that have a formula below, by facility.
 MODELLED = {
-    "FAC": {"Mizuki", "Dorothy", "Purestream", "Ceobe", "Fang", "Kroos", "Totter",
-            "Minimalist", "Vermeil", "Bubble", "Astgenne Alter", "Waai Fu", "Leto",
-            "Miss Christine", "Fang Alter", "Aroma", "Almond", "Viy"},
+    "FAC": {"Mizuki", "Dorothy", "Purestream", "Totter", "Minimalist", "Vermeil", "Bubble",
+            "Astgenne Alter", "Waai Fu", "Leto", "Miss Christine", "Fang Alter", "Almond", "Viy"},
     "TP": {"Shamare", "Tequila", "Proviso", "Closure", "Kichisei", "Archetto", "Hoederer",
            "Lemuen", "Quartz", "Underflow", "Texas", "Lappland", "Mantra", "Snowsant",
-           "Vigil", "Mitm", "Morgan"},
-    "PP": {"Greyy Alter", "Spuria", "Friston-3", "PhonoR-0", "Philae"},
+           "Vigil", "Mitm", "Morgan", "Exusiai Alter"},
+    "PP": {"Greyy Alter", "Friston-3", "PhonoR-0", "Philae"},
     "RR": {"Ines", "Ch'en Alter 2", "Surfer", "Typhon"},
     "HR": {"Tin Man", "Mr.Nothing", "Brigid", "Kal'tsit Alter"},
     "DORM": {"Lumen", "Entelechia"},
@@ -89,6 +93,7 @@ class Settings:
     dorm_levels: int = 20  # 4 DORMs at lvl 5
     rr_bonus: float = 11 + 15  # RR!F24 lvl 3 + RR!H24 ambience >4k
     exp_weight: float = 1.0  # value of 1 EXP in LMD
+    gold_facs: int | None = None  # fixed number of Gold FACs per shift; None = solver's choice
 
     @property
     def tp_count(self) -> int:
@@ -101,11 +106,6 @@ class Settings:
     @property
     def pp_count(self) -> int:
         return LAYOUTS[self.layout][2]
-
-
-def ramp_avg(start: float, end: float, per_hour: float, hours: int = 12) -> float:
-    """Mean over the first ``hours`` hours, counted per whole hour like the guide."""
-    return sum(min(end, start + per_hour * h) for h in range(hours)) / hours
 
 
 def unlocked(o: Owned, s: Skill) -> bool:
@@ -262,10 +262,11 @@ def fac_pct(team: tuple[str, ...], product: str, r: Roster, ctx: "Context") -> f
         total += min(40, 5 * (plain // 5))
     if "Astgenne Alter" in team:
         caps["Astgenne Alter"] = 5 * rhine_tech  # FAC!J180
-    if "Vermeil" in team and r.has("Vermeil", 1):
-        total += 2 * sum(caps.values())  # FAC!B33: +2% per CAP from self and others
-    elif "Bubble" in team and r.has("Bubble", 1):
+    # Game text: Bubble's skill "does not stack with Recycling and takes priority over it".
+    if "Bubble" in team and r.has("Bubble", 1):
         total += sum(3 * c if c > 16 else c for c in caps.values())  # FAC!B108
+    elif "Vermeil" in team and r.has("Vermeil", 1):
+        total += 2 * sum(caps.values())  # FAC!B33: +2% per CAP from self and others
     return total
 
 
@@ -277,12 +278,6 @@ def _fac_special(op, team, product, r: Roster, ctx, standard, rhine_tech, caps) 
         return 5 * rhine_tech  # FAC!B180
     if op == "Purestream" and e >= 1 and product == "Gold":
         return 20 * ctx.settings.tp_count  # FAC!D220
-    if op == "Ceobe" and e >= 2:
-        return ramp_avg(20, 25, 1)  # FAC!D55
-    if op == "Fang" and e >= 0:
-        return ramp_avg(20, 25, 1)  # FAC!J342
-    if op == "Kroos" and e >= 0:
-        return ramp_avg(15, 25, 2)  # FAC!P342
     if op == "Totter" and e >= 0:
         return 27.5  # FAC!B346, first 12 h average
     if op == "Minimalist" and e >= 0:
@@ -296,8 +291,6 @@ def _fac_special(op, team, product, r: Roster, ctx, standard, rhine_tech, caps) 
         return 30  # FAC!H35
     if op == "Fang Alter":
         return 10 * len(A1 & set(team) - {op})  # FAC!B200, Fang + Kroos -> FAC!J188 70-85%
-    if op == "Aroma" and product == "Gold":
-        return ramp_avg(0, 20, 2)  # FAC!J243
     if op == "Almond" and product == "Gold":
         return 2 * min(3, len(BSW & set(r.owned)))  # FAC!N241, BSW in the base
     if op == "Viy":
@@ -368,6 +361,8 @@ def _tp_pct(op: str, team, r: Roster, ctx: "Context") -> float:
         return 30 if e >= 2 else 25  # TP!J240 (no Ulpianus)
     if op == "Texas":
         return 65 if "Lappland" in team else 0  # TP!D90
+    if op == "Exusiai Alter" and e >= 2:
+        return 15 * len(LATERANO & set(team))  # game: +15% per Laterano in the same TP
     if op == "Vigil" and e >= 2:
         return 25 + 5 * 3  # TP!F240, RR lvl 3
     if op == "Mitm" and e >= 2:
@@ -391,8 +386,6 @@ def pp_pct(op: str, r: Roster, ctx: "Context") -> float:
     e = r.elite(op)
     if op == "Greyy Alter":
         return PP_INNATE + 23  # PP!B64: +1% per 10 drone cap; EN cap is 235
-    if op == "Spuria":
-        return PP_INNATE + (ramp_avg(15, 20, 1) if e >= 2 else ramp_avg(10, 15, 1))
     bonus = sum(x.pct for x in r.effects(op, "PP"))
     if op == "Friston-3" and ctx.cc.kaltsit:
         bonus += 5  # PP!J102
@@ -412,7 +405,7 @@ def rr_individual(op: str, team, r: Roster, ctx: "Context") -> float:
     e = r.elite(op)
     skill = sum(x.pct for x in r.effects(op, "RR"))
     if op == "Ines" and e >= 2:
-        skill = ramp_avg(20, 30, 2) + ctx.cc.rr_ines  # RR!B60
+        skill += ctx.cc.rr_ines  # Wiš'adel; the 20->30% ramp is parsed (RR!B60)
     elif op == "Ch'en Alter 2" and e >= 2:
         skill = 20  # RR!L47, no Worldly Plight
     elif op == "Surfer":

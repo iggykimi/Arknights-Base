@@ -38,9 +38,12 @@ def main() -> None:
     ap.add_argument("--layout", choices=sorted(LAYOUTS), default="243")
     ap.add_argument("--office-level", type=int, default=3)
     ap.add_argument("--exp-weight", type=float, default=1.0, help="LMD worth of 1 EXP")
+    ap.add_argument("--gold-facs", type=int, help="fix the Gold FACs per shift")
     args = ap.parse_args()
 
-    settings = Settings(args.layout, args.office_level, exp_weight=args.exp_weight)
+    settings = Settings(
+        args.layout, args.office_level, exp_weight=args.exp_weight, gold_facs=args.gold_facs
+    )
     skills = all_skills(args.excel, args.cache)
     r = Roster(load_roster(args.collection), skills)
     plan = build_plan(r, settings)

@@ -8,44 +8,44 @@ El turno A es la mejor asignación posible; el turno B es la mejor con los opera
 
 | Instalación | Operadores | Producto | Productividad | Por día | Horas |
 |---|---|---|---|---|---|
-| CC | Amiya, Kal'tsit, Młynar, Wiš'adel, Coldshot | — | — | — | 36.9 |
-| FAC1 | Ceobe, Purestream, Vermeil | Gold | +100.8% | 40 barras | 53.3 |
-| FAC2 | Dorothy, Gravel, Spot | Gold | +100.0% | 40 barras | 53.3 |
-| FAC3 | Mizuki, Steward, Vanilla | Gold | +95.0% | 39 barras | 53.3 |
-| FAC4 | Crownslayer, Tragodia, Vigna | EXP | +105.0% | 16.400 EXP | 53.3 |
-| TP1 | Archetto, Hoederer, Proviso | LMD | +187.1% | 29.469 LMD | 53.3 |
-| TP2 | Closure, Lappland, Texas | LMD | +116.3% | 22.200 LMD | 32.0 |
-| PP1 | Greyy Alter | drones | +28.0% | — | 53.3 |
-| PP2 | Blaze Alter | drones | +25.0% | — | 53.3 |
-| PP3 | Goldenglow | drones | +25.0% | — | 53.3 |
-| RR | Ch'en Alter 2, Ines | pistas | +130.5% | — | 53.3 |
-| HR | Penance | contacto | +55.0% | — | 25.3 |
+| CC | Amiya, Kal'tsit, Civilight Eterna, Yahata Umiri, Wiš'adel | — | — | — | 32.0 |
+| FAC1 | Aroma, Purestream, Steward | Gold | +95.0% | 39 barras | 34.3 |
+| FAC2 | Jessica, Mizuki, Vanilla | Gold | +95.0% | 39 barras | 53.3 |
+| FAC3 | Almond, Gravel, Totter | Gold | +92.5% | 38 barras | 30.0 |
+| FAC4 | Perfumer, Tragodia, Vigna | EXP | +95.0% | 15.600 EXP | 53.3 |
+| TP1 | Lappland, Proviso, Texas | LMD | +171.6% | 27.876 LMD | 32.0 |
+| TP2 | Closure, Hoederer, Quartz | LMD | +120.9% | 22.680 LMD | 53.3 |
+| PP1 | Greyy Alter | drones | +28.0% | — | 43.6 |
+| PP2 | Blaze Alter | drones | +25.0% | — | 43.6 |
+| PP3 | Goldenglow | drones | +25.0% | — | 43.6 |
+| RR | Ch'en Alter 2, Ines | pistas | +145.5% | — | 43.6 |
+| HR | Penance | contacto | +65.0% | — | 22.9 |
 
-- **LMD/día:** 63.162
-- **EXP/día:** 16.400
-- **Oro:** 119.2 barras/día fabricadas, 118.9 pedidas por los TP (drones incluidos)
+- **LMD/día:** 61.428
+- **EXP/día:** 15.600
+- **Oro:** 116.5 barras/día fabricadas, 115.3 pedidas por los TP (drones incluidos)
 - **Drones:** +78% de recuperación, al TP que más LMD da
 
 ## Turno B
 
 | Instalación | Operadores | Producto | Productividad | Por día | Horas |
 |---|---|---|---|---|---|
-| CC | Paprika, Mon3tr, Dobermann, Flametail, Heavyrain | — | — | — | 43.6 |
-| FAC1 | Aroma, Fang, Haze | Gold | +83.8% | 37 barras | 26.7 |
-| FAC2 | Almond, Kroos, Popukar | Gold | +77.5% | 36 barras | 24.0 |
-| FAC3 | Bena, Bubble, Snow Hunter | Gold | +66.0% | 33 barras | 26.7 |
-| FAC4 | Jessica, Perfumer, Totter | EXP | +82.5% | 14.600 EXP | 36.9 |
-| TP1 | Mitm, Shamare, Tequila | LMD | +120.1% | 22.592 LMD | 26.7 |
-| TP2 | Midnight, Mousse, Quartz | LMD | +104.0% | 20.942 LMD | 36.9 |
-| PP1 | Greyy | drones | +25.0% | — | 32.0 |
-| PP2 | Indigo | drones | +20.0% | — | 32.0 |
-| PP3 | Liskarm | drones | +20.0% | — | 32.0 |
-| RR | Typhon, Vigil | pistas | +105.0% | — | 32.0 |
-| HR | Haruka | contacto | +50.0% | — | 32.0 |
+| CC | Paprika, Mon3tr, Yūtenji Nyamu, Młynar, Coldshot | — | — | — | 40.0 |
+| FAC1 | Ceobe, Cuora, Vermeil | Gold | +90.8% | 38 barras | 48.0 |
+| FAC2 | Dorothy, Haze, Silence | Gold | +85.0% | 37 barras | 48.0 |
+| FAC3 | Bena, Bubble, Spot | Gold | +76.0% | 35 barras | 48.0 |
+| FAC4 | Crownslayer, Fang, Popukar | EXP | +88.8% | 15.100 EXP | 32.0 |
+| TP1 | Archetto, Exusiai Alter, Lemuen | LMD | +125.0% | 23.097 LMD | 48.0 |
+| TP2 | Mitm, Shamare, Tequila | LMD | +120.1% | 22.592 LMD | 32.0 |
+| PP1 | Greyy | drones | +25.0% | — | 48.0 |
+| PP2 | Indigo | drones | +20.0% | — | 48.0 |
+| PP3 | Liskarm | drones | +20.0% | — | 48.0 |
+| RR | Typhon, Vigil | pistas | +110.0% | — | 48.0 |
+| HR | Haruka | contacto | +50.0% | — | 48.0 |
 
-- **LMD/día:** 50.876
-- **EXP/día:** 14.600
-- **Oro:** 105.5 barras/día fabricadas, 101.8 pedidas por los TP (drones incluidos)
+- **LMD/día:** 53.196
+- **EXP/día:** 15.100
+- **Oro:** 110.3 barras/día fabricadas, 106.4 pedidas por los TP (drones incluidos)
 - **Drones:** +65% de recuperación, al TP que más LMD da
 
 ## Fijos
