@@ -55,7 +55,10 @@ def main() -> None:
     users = args.users or sorted(p.name for p in PLAYERS.iterdir() if p.is_dir())
     if not args.no_fetch:  # before the slow part, so a private profile fails fast
         for user in users:
-            n = krooster.save(user, PLAYERS / user / "roster.json")
+            try:
+                n = krooster.save(user, PLAYERS / user / "roster.json")
+            except (RuntimeError, OSError) as e:  # private profile, typo, no network
+                raise SystemExit(f"{user}: {e}") from e
             print(f"{user}: {n} operadores de Krooster")
     skills, names = all_skills(args.excel, args.cache)
     overrides = {k: v for k in ("layout", "office_level", "exp_weight", "gold_facs")
@@ -82,6 +85,8 @@ def player_settings(folder: Path) -> Settings:
     unknown = set(data) - {f.name for f in fields(Settings)}
     if unknown:
         raise ValueError(f"{path}: unknown settings {sorted(unknown)}")
+    if data.get("layout", "243") not in LAYOUTS:
+        raise ValueError(f"{path}: layout must be one of {sorted(LAYOUTS)}")
     return Settings(**data)
 
 
