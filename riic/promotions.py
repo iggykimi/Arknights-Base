@@ -1,4 +1,4 @@
-"""python -m riic.promotions: what each promotion would add to the base.
+"""python -m riic.promotions USER: what each promotion would add to the base.
 
 For every owned operator whose next promotion unlocks a CC, FAC, TP or PP skill,
 the whole plan (both shifts) is rebuilt with that operator promoted, and the
@@ -12,8 +12,9 @@ from dataclasses import replace
 from pathlib import Path
 
 from . import optimize
+from .__main__ import PLAYERS, player_settings
 from .gamedata import all_skills, download, rarities
-from .model import MODELLED, Roster, Settings
+from .model import MODELLED, Roster
 from .optimize import Plan, build_plan, plan_value
 from .roster import load_roster
 
@@ -84,16 +85,17 @@ def _run(job):
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--excel", type=Path, default=ROOT / "Arknights Base Combo Guide.xlsx")
-    ap.add_argument("--collection", type=Path, default=ROOT / "Collection.txt")
+    ap.add_argument("user", help="a players/ folder")
     ap.add_argument("--cache", type=Path, default=ROOT / ".cache" / "gamedata")
-    ap.add_argument("--out", type=Path, default=ROOT / "promotions.md")
-    ap.add_argument("--workers", type=int, default=12)
+    ap.add_argument("--workers", type=int, default=6, help="12 ran out of memory")
     args = ap.parse_args()
 
-    settings = Settings()
+    folder = PLAYERS / args.user
+    settings = player_settings(folder)
     skills, names = all_skills(args.excel, args.cache)
     stars = rarities(download(args.cache), names)
-    r = Roster(load_roster(args.collection, names), skills)
+    r = Roster(load_roster(folder / "roster.json", names), skills)
+    out = folder / "promotions.md"
     optimize.MIP_GAP = GAP
     current = build_plan(r, settings)
     base_lmd, base_exp, _ = daily(r, current)
@@ -119,7 +121,7 @@ def main() -> None:
         "# Promociones que merecen la pena para la base",
         "",
         (
-            "Generado con `python -m riic.promotions`. Cada fila rehace el plan entero (turnos A y B) "
+            f"Generado con `python -m riic.promotions {args.user}`.Cada fila rehace el plan entero (turnos A y B) "
             "con ese operador promocionado y compara con el plan actual, que sigue siendo una "
             "opción. Ganancia = LMD + EXP por día con rotación de 12 h; por debajo de "
             f"{TIE}, «(nada)»."
@@ -146,8 +148,8 @@ def main() -> None:
             f"| {op} ({stars.get(op, '?')}★) | E{o.elite}→E{target} | {gain:+,.0f}{mark} "
             f"| {d_lmd:+,.0f} | {d_exp:+,.0f} | {where} | {unlocks} |".replace(",", ".")
         )
-    args.out.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
-    print(args.out)
+    out.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
+    print(out)
 
 
 if __name__ == "__main__":

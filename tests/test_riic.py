@@ -38,6 +38,7 @@ ROOT = Path(__file__).resolve().parent.parent
 
 
 WORKBOOK = ROOT / "Arknights Base Combo Guide.xlsx"
+DATA = ROOT / "tests" / "data"
 
 
 @pytest.fixture(scope="session")
@@ -62,12 +63,13 @@ def names():
 
 @pytest.fixture(scope="session")
 def roster(skills, names):
-    return Roster(load_roster(ROOT / "Collection.txt", names), skills)
+    # Frozen copies of players/*/roster.json: a new promotion must not break a test.
+    return Roster(load_roster(DATA / "iggykimi.json", names), skills)
 
 
 @pytest.fixture(scope="session")
 def chiro10(skills, names):
-    return Roster(load_roster(ROOT / "rosters" / "chiro10.json", names), skills)
+    return Roster(load_roster(DATA / "chiro10.json", names), skills)
 
 
 def ctx_with(cc, r, ines=False):
@@ -77,12 +79,13 @@ def ctx_with(cc, r, ines=False):
     return ctx
 
 
-def test_collection_promotions(roster):
+def test_roster_reads_char_ids(roster):
     o = roster.owned
-    assert o["Ch'en Alter 2"].elite == 2  # "Dawnstreak" title
+    assert o["Ch'en Alter 2"].elite == 2  # char_1050_chen3, "Dawnstreak" in Krooster
     assert "Ch'en Alter" not in o
     assert o["Lumen"].elite == 1  # the old CSV said E2
-    assert o["Melantha"].elite == 1  # listed as "Maxed"
+    assert o["Melantha"].elite == 1  # Krooster shows "Maxed"
+    assert o["Valkáris"].elite >= 0  # Krooster spells her "Varkáris"
     assert o["Warmy"].elite == 0
     assert o["Durin"].level == 30
 

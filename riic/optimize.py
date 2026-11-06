@@ -45,6 +45,7 @@ LAYERS = 3  # one per shift and one of slack (see _diverse)
 MIP_GAP = 1e-3  # see _production; comparisons between plans need a tighter one
 CC_TOP = 8  # CC options per shift tried in _best_ccs
 SEED_GAP = 0.02  # first round: both shifts look alike and proving 0.1% takes minutes
+TIME_LIMIT = 600  # s per solve; on an idle machine they take 5-75 s
 
 
 @dataclass
@@ -164,9 +165,10 @@ def _production(
         ),
         integrality=np.r_[np.ones(n), np.zeros(n_vars - n)],
         bounds=Bounds(np.zeros(n_vars), np.r_[np.ones(n), np.full(len(tp_idx), np.inf)]),
-        # Within 0.1% of the optimum is far below the guide's own rounding; some
-        # CC buffs make HiGHS spend minutes proving the last decimals otherwise.
-        options={"mip_rel_gap": SEED_GAP if seed else MIP_GAP, "time_limit": 30 if seed else 120},
+        # Within 0.1% of the optimum is far below the guide's own rounding. The gap,
+        # not the clock, ends the solve: a time limit made the plan depend on how
+        # busy the machine was. TIME_LIMIT is only a safety net and warns below.
+        options={"mip_rel_gap": SEED_GAP if seed else MIP_GAP, "time_limit": TIME_LIMIT},
     )
     if res.x is None:
         raise RuntimeError(f"MILP failed: {res.message}")
@@ -363,6 +365,10 @@ def build_plan(r: Roster, s: Settings, rounds: int = 6) -> Plan:
     # Production and CC are chosen in turns, and where that stops depends on where
     # it starts: a second start swaps the shifts' CCs (a band can be worth more in
     # the other shift). The best plan seen is kept.
+    # Putting the CC inside the integer program is exact (its buffs add a fixed %
+    # per FAC and TP) but was tried and lost: one binary per minimal CC and shift
+    # with linearised buffs gives HiGHS a weak relaxation, it hits the time limit at
+    # 1-29% gap and the plans came out 0.5-2.5% worse than these rounds.
     best = _converge(plan, r, pool, rounds, seed=True)
     plan.a, plan.b = replace(best[1][0], cc=best[1][1].cc), replace(best[1][1], cc=best[1][0].cc)
     best = max(best, _converge(plan, r, pool, rounds, seed=False), key=lambda b: b[0])

@@ -14,7 +14,7 @@ from pathlib import Path
 
 from .excel import Effect, Skill, extract_skills, operator_ids, ramp_avg
 
-COMMIT = "db6f9ef8046ad17dbebe3ff1d0dd88844a5bc78c"  # 2026-10-16, EN
+COMMIT = "ecca6444cc87b91e2a04d6a3a0c24799e8a68c0e"  # 2026-11-01, EN
 URL = "https://raw.githubusercontent.com/ArknightsAssets/ArknightsGamedata/{}/en/gamedata/excel/{}"
 FILES = ("building_data.json", "character_table.json")
 ROOMS = {"CONTROL": "CC", "MANUFACTURE": "FAC", "TRADING": "TP", "POWER": "PP",

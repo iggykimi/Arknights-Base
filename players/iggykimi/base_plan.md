@@ -1,6 +1,6 @@
-# Plan de base (2-4-3, roster actual)
+# Plan de base de iggykimi (2-4-3)
 
-Generado con `python -m riic` a partir de `Collection.txt`, `Arknights Base Combo Guide.xlsx` y los datos del juego EN (las habilidades que la guía no lista). No editar a mano: cambia el roster o los supuestos y vuelve a generarlo.
+Generado con `python -m riic iggykimi` a partir de su roster de Krooster (`roster.json`, 293 operadores), `Arknights Base Combo Guide.xlsx` y los datos del juego EN (las habilidades que la guía no lista). No editar a mano: cambia el roster o los supuestos y vuelve a generarlo.
 
 Los dos turnos se eligen a la vez para rotar cada 12 h; el A es el que más produce. «Horas» es lo que aguanta el operador que antes se queda sin moral (24 de moral, CC lvl 5).
 
@@ -61,7 +61,7 @@ Los dos turnos se eligen a la vez para rotar cada 12 h; el A es el que más prod
 ## Supuestos
 
 - Instalaciones a nivel máximo, DORMs a lvl 5 (20 niveles), Office lvl 3, ambiente >4k (+15% RR).
-- 1 EXP vale 1 LMD (CE-5 y LS-5 dan lo mismo por cordura). `--exp-weight` lo cambia.
+- 1 EXP vale 1 LMD (con 1, CE-5 y LS-5 dan lo mismo por cordura).
 - Pedidos lvl 3: 30/50/20% de 2/3/4 oros, 500 LMD por oro (TP!E45). Proviso E2 ×1.5517 (TP!J193); Closure: 1200 LMD por 2 oros en 144 min (NEW!F23).
 - Drones: uno cada 6 min y 3 min de trabajo cada uno (datos del juego), medio día de TP con +0% de recuperación; cada 10% más ≈ 5% (PP!B5). Todos a un TP.
 - Rampas (Ceobe, Fang, Kroos, Ines, Spuria): media de las primeras 12 h, como el Excel.
