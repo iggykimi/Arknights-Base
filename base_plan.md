@@ -2,51 +2,51 @@
 
 Generado con `python -m riic` a partir de `Collection.txt`, `Arknights Base Combo Guide.xlsx` y los datos del juego EN (las habilidades que la guía no lista). No editar a mano: cambia el roster o los supuestos y vuelve a generarlo.
 
-El turno A es la mejor asignación posible; el turno B es la mejor con los operadores que quedan, para rotar cada 12 h. «Horas» es lo que aguanta el operador que antes se queda sin moral (24 de moral, CC lvl 5).
+Los dos turnos se eligen a la vez para rotar cada 12 h; el A es el que más produce. «Horas» es lo que aguanta el operador que antes se queda sin moral (24 de moral, CC lvl 5).
 
 ## Turno A
 
 | Instalación | Operadores | Producto | Productividad | Por día | Horas |
 |---|---|---|---|---|---|
-| CC | Amiya, Kal'tsit, Civilight Eterna, Yahata Umiri, Wiš'adel | — | — | — | 32.0 |
-| FAC1 | Aroma, Purestream, Steward | Gold | +95.0% | 39 barras | 34.3 |
-| FAC2 | Jessica, Mizuki, Vanilla | Gold | +95.0% | 39 barras | 53.3 |
-| FAC3 | Almond, Gravel, Totter | Gold | +92.5% | 38 barras | 30.0 |
-| FAC4 | Perfumer, Tragodia, Vigna | EXP | +95.0% | 15.600 EXP | 53.3 |
-| TP1 | Lappland, Proviso, Texas | LMD | +171.6% | 27.876 LMD | 32.0 |
-| TP2 | Closure, Hoederer, Quartz | LMD | +120.9% | 22.680 LMD | 53.3 |
-| PP1 | Greyy Alter | drones | +28.0% | — | 43.6 |
-| PP2 | Blaze Alter | drones | +25.0% | — | 43.6 |
-| PP3 | Goldenglow | drones | +25.0% | — | 43.6 |
-| RR | Ch'en Alter 2, Ines | pistas | +145.5% | — | 43.6 |
-| HR | Penance | contacto | +65.0% | — | 22.9 |
+| CC | Paprika, Mon3tr, Civilight Eterna, Yahata Umiri, Wiš'adel | — | — | — | 34.3 |
+| FAC1 | Dorothy, Purestream, Spot | Gold | +105.0% | 41 barras | 53.3 |
+| FAC2 | Gravel, Haze, Totter | Gold | +97.5% | 40 barras | 53.3 |
+| FAC3 | Bena, Bubble, Ceobe | Gold | +77.8% | 36 barras | 120.0 |
+| FAC4 | Crownslayer, Tragodia, Vigna | EXP | +105.0% | 16.400 EXP | 53.3 |
+| TP1 | Mitm, Shamare, Tequila | LMD | +120.1% | 22.592 LMD | 34.3 |
+| TP2 | Archetto, Closure, Quartz | LMD | +126.8% | 23.280 LMD | 53.3 |
+| PP1 | Greyy | drones | +25.0% | — | 43.6 |
+| PP2 | Indigo | drones | +20.0% | — | 43.6 |
+| PP3 | Liskarm | drones | +20.0% | — | 43.6 |
+| RR | Typhon, Vigil | pistas | +120.0% | — | 43.6 |
+| HR | Haruka | contacto | +60.0% | — | 43.6 |
 
-- **LMD/día:** 61.428
-- **EXP/día:** 15.600
-- **Oro:** 116.5 barras/día fabricadas, 115.3 pedidas por los TP (drones incluidos)
-- **Drones:** +78% de recuperación, al TP que más LMD da
+- **LMD/día:** 65.078
+- **EXP/día:** 16.400
+- **Oro:** 116.0 barras/día fabricadas, 116.0 pedidas por los TP (drones incluidos)
+- **Drones:** +65% de recuperación, al TP que más LMD da
 
 ## Turno B
 
 | Instalación | Operadores | Producto | Productividad | Por día | Horas |
 |---|---|---|---|---|---|
-| CC | Paprika, Mon3tr, Yūtenji Nyamu, Młynar, Coldshot | — | — | — | 40.0 |
-| FAC1 | Ceobe, Cuora, Vermeil | Gold | +90.8% | 38 barras | 48.0 |
-| FAC2 | Dorothy, Haze, Silence | Gold | +85.0% | 37 barras | 48.0 |
-| FAC3 | Bena, Bubble, Spot | Gold | +76.0% | 35 barras | 48.0 |
-| FAC4 | Crownslayer, Fang, Popukar | EXP | +88.8% | 15.100 EXP | 32.0 |
-| TP1 | Archetto, Exusiai Alter, Lemuen | LMD | +125.0% | 23.097 LMD | 48.0 |
-| TP2 | Mitm, Shamare, Tequila | LMD | +120.1% | 22.592 LMD | 32.0 |
-| PP1 | Greyy | drones | +25.0% | — | 48.0 |
-| PP2 | Indigo | drones | +20.0% | — | 48.0 |
-| PP3 | Liskarm | drones | +20.0% | — | 48.0 |
-| RR | Typhon, Vigil | pistas | +110.0% | — | 48.0 |
-| HR | Haruka | contacto | +50.0% | — | 48.0 |
+| CC | Amiya, Kal'tsit, Togawa Sakiko, Wakaba Mutsumi, Misumi Uika | — | — | — | 30.0 |
+| FAC1 | Jessica, Mizuki, Steward | Gold | +98.0% | 40 barras | 36.9 |
+| FAC2 | Cuora, Noir Corne, Vermeil | Gold | +84.0% | 37 barras | 36.9 |
+| FAC3 | Almond, Aroma, Popukar | Gold | +83.0% | 37 barras | 24.0 |
+| FAC4 | Fang, Perfumer, Vanilla | Gold | +81.8% | 36 barras | 36.9 |
+| TP1 | Gummy, Lappland, Texas | LMD | +105.0% | 21.044 LMD | 25.3 |
+| TP2 | Hoederer, Mantra, Proviso | LMD | +176.2% | 28.354 LMD | 36.9 |
+| PP1 | Greyy Alter | drones | +28.0% | — | 32.0 |
+| PP2 | Blaze Alter | drones | +25.0% | — | 32.0 |
+| PP3 | Goldenglow | drones | +25.0% | — | 32.0 |
+| RR | Ch'en Alter 2, Ines | pistas | +125.5% | — | 32.0 |
+| HR | Penance | contacto | +55.0% | — | 19.2 |
 
-- **LMD/día:** 53.196
-- **EXP/día:** 15.100
-- **Oro:** 110.3 barras/día fabricadas, 106.4 pedidas por los TP (drones incluidos)
-- **Drones:** +65% de recuperación, al TP que más LMD da
+- **LMD/día:** 74.633
+- **EXP/día:** 0
+- **Oro:** 149.3 barras/día fabricadas, 149.3 pedidas por los TP (drones incluidos)
+- **Drones:** +78% de recuperación, al TP que más LMD da
 
 ## Fijos
 
@@ -63,7 +63,7 @@ El turno A es la mejor asignación posible; el turno B es la mejor con los opera
 - Instalaciones a nivel máximo, DORMs a lvl 5 (20 niveles), Office lvl 3, ambiente >4k (+15% RR).
 - 1 EXP vale 1 LMD (CE-5 y LS-5 dan lo mismo por cordura). `--exp-weight` lo cambia.
 - Pedidos lvl 3: 30/50/20% de 2/3/4 oros, 500 LMD por oro (TP!E45). Proviso E2 ×1.5517 (TP!J193); Closure: 1200 LMD por 2 oros en 144 min (NEW!F23).
-- Drones: 10% de recuperación ≈ 5% de productividad (PP!B5), todos al mejor TP.
+- Drones: uno cada 6 min y 3 min de trabajo cada uno (datos del juego), medio día de TP con +0% de recuperación; cada 10% más ≈ 5% (PP!B5). Todos a un TP.
 - Rampas (Ceobe, Fang, Kroos, Ines, Spuria): media de las primeras 12 h, como el Excel.
 - Greyy Alter: 23% (+1% por cada 10 de capacidad de drones; 235 en EN, PP!B65).
 - Dawnstreak = Ch'en Alter 2 (char_1050_chen3), comprobado con los datos del juego.

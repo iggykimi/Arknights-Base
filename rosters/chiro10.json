@@ -1,0 +1,1362 @@
+{
+ "char_002_amiya": {
+  "elite": 2,
+  "level": 60,
+  "potential": 6
+ },
+ "char_003_kalts": {
+  "elite": 2,
+  "level": 60,
+  "potential": 1
+ },
+ "char_009_12fce": {
+  "elite": 0,
+  "level": 1,
+  "potential": 2
+ },
+ "char_1001_amiya2": {
+  "elite": 2,
+  "level": 60,
+  "potential": 6
+ },
+ "char_1011_lava2": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_1020_reed2": {
+  "elite": 2,
+  "level": 60,
+  "potential": 2
+ },
+ "char_1021_kroos2": {
+  "elite": 1,
+  "level": 51,
+  "potential": 6
+ },
+ "char_1022_flwr2": {
+  "elite": 0,
+  "level": 1,
+  "potential": 2
+ },
+ "char_1024_hbisc2": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_1027_greyy2": {
+  "elite": 0,
+  "level": 1,
+  "potential": 3
+ },
+ "char_102_texas": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_1031_slent2": {
+  "elite": 0,
+  "level": 2,
+  "potential": 6
+ },
+ "char_1035_wisdel": {
+  "elite": 2,
+  "level": 90,
+  "potential": 1
+ },
+ "char_1036_fang2": {
+  "elite": 0,
+  "level": 1,
+  "potential": 2
+ },
+ "char_1037_amiya3": {
+  "elite": 2,
+  "level": 60,
+  "potential": 6
+ },
+ "char_1039_thorn2": {
+  "elite": 0,
+  "level": 2,
+  "potential": 2
+ },
+ "char_1040_blaze2": {
+  "elite": 2,
+  "level": 60,
+  "potential": 1
+ },
+ "char_1041_angel2": {
+  "elite": 2,
+  "level": 60,
+  "potential": 2
+ },
+ "char_1042_phatm2": {
+  "elite": 2,
+  "level": 90,
+  "potential": 1
+ },
+ "char_1044_hsgma2": {
+  "elite": 2,
+  "level": 90,
+  "potential": 1
+ },
+ "char_1045_svash2": {
+  "elite": 2,
+  "level": 90,
+  "potential": 3
+ },
+ "char_1046_sbell2": {
+  "elite": 2,
+  "level": 90,
+  "potential": 3
+ },
+ "char_1047_halo2": {
+  "elite": 0,
+  "level": 2,
+  "potential": 1
+ },
+ "char_1050_chen3": {
+  "elite": 2,
+  "level": 60,
+  "potential": 1
+ },
+ "char_108_silent": {
+  "elite": 0,
+  "level": 30,
+  "potential": 1
+ },
+ "char_109_fmout": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_110_deepcl": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_112_siege": {
+  "elite": 0,
+  "level": 2,
+  "potential": 1
+ },
+ "char_117_myrrh": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_118_yuki": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_120_hibisc": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_121_lava": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_122_beagle": {
+  "elite": 1,
+  "level": 10,
+  "potential": 6
+ },
+ "char_123_fang": {
+  "elite": 1,
+  "level": 1,
+  "potential": 6
+ },
+ "char_124_kroos": {
+  "elite": 1,
+  "level": 55,
+  "potential": 6
+ },
+ "char_126_shotst": {
+  "elite": 0,
+  "level": 10,
+  "potential": 6
+ },
+ "char_127_estell": {
+  "elite": 0,
+  "level": 1,
+  "potential": 4
+ },
+ "char_128_plosis": {
+  "elite": 1,
+  "level": 60,
+  "potential": 1
+ },
+ "char_130_doberm": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_131_flameb": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_133_mm": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_135_halo": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_137_brownb": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_140_whitew": {
+  "elite": 2,
+  "level": 80,
+  "potential": 1
+ },
+ "char_141_nights": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_144_red": {
+  "elite": 0,
+  "level": 6,
+  "potential": 1
+ },
+ "char_149_scave": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_1502_crosly": {
+  "elite": 0,
+  "level": 2,
+  "potential": 6
+ },
+ "char_150_snakek": {
+  "elite": 0,
+  "level": 45,
+  "potential": 6
+ },
+ "char_151_myrtle": {
+  "elite": 2,
+  "level": 60,
+  "potential": 6
+ },
+ "char_154_morgan": {
+  "elite": 0,
+  "level": 1,
+  "potential": 3
+ },
+ "char_155_tiger": {
+  "elite": 0,
+  "level": 1,
+  "potential": 2
+ },
+ "char_157_dagda": {
+  "elite": 0,
+  "level": 1,
+  "potential": 3
+ },
+ "char_159_peacok": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_163_hpsts": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_172_svrash": {
+  "elite": 2,
+  "level": 60,
+  "potential": 1
+ },
+ "char_181_flower": {
+  "elite": 1,
+  "level": 50,
+  "potential": 6
+ },
+ "char_183_skgoat": {
+  "elite": 0,
+  "level": 25,
+  "potential": 6
+ },
+ "char_185_frncat": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_187_ccheal": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_190_clour": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_192_falco": {
+  "elite": 1,
+  "level": 1,
+  "potential": 6
+ },
+ "char_193_frostl": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_194_leto": {
+  "elite": 0,
+  "level": 1,
+  "potential": 2
+ },
+ "char_196_sunbr": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_198_blackd": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_199_yak": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_2024_chyue": {
+  "elite": 2,
+  "level": 60,
+  "potential": 1
+ },
+ "char_2026_yu": {
+  "elite": 2,
+  "level": 60,
+  "potential": 1
+ },
+ "char_2027_wang": {
+  "elite": 2,
+  "level": 90,
+  "potential": 1
+ },
+ "char_202_demkni": {
+  "elite": 2,
+  "level": 60,
+  "potential": 2
+ },
+ "char_208_melan": {
+  "elite": 1,
+  "level": 1,
+  "potential": 6
+ },
+ "char_209_ardign": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_210_stward": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_211_adnach": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_212_ansel": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_219_meteo": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_220_grani": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_230_savage": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_235_jesica": {
+  "elite": 0,
+  "level": 45,
+  "potential": 6
+ },
+ "char_236_rope": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_237_gravel": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_240_wyvern": {
+  "elite": 1,
+  "level": 1,
+  "potential": 6
+ },
+ "char_241_panda": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_248_mgllan": {
+  "elite": 0,
+  "level": 50,
+  "potential": 1
+ },
+ "char_249_mlyss": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_253_greyy": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_254_vodfox": {
+  "elite": 2,
+  "level": 5,
+  "potential": 1
+ },
+ "char_258_podego": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_260_durnar": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_263_skadi": {
+  "elite": 0,
+  "level": 10,
+  "potential": 1
+ },
+ "char_265_sophia": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_271_spikes": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_272_strong": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_274_astesi": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_275_breeze": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_277_sqrrel": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_278_orchid": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_279_excu": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_281_popka": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_282_catap": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_283_midn": {
+  "elite": 1,
+  "level": 1,
+  "potential": 6
+ },
+ "char_284_spot": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_285_medic2": {
+  "elite": 0,
+  "level": 30,
+  "potential": 1
+ },
+ "char_286_cast3": {
+  "elite": 0,
+  "level": 20,
+  "potential": 1
+ },
+ "char_289_gyuki": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_290_vigna": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_291_aglina": {
+  "elite": 2,
+  "level": 60,
+  "potential": 1
+ },
+ "char_293_thorns": {
+  "elite": 2,
+  "level": 60,
+  "potential": 1
+ },
+ "char_297_hamoni": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_298_susuro": {
+  "elite": 0,
+  "level": 25,
+  "potential": 6
+ },
+ "char_301_cutter": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_302_glaze": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_304_zebra": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_311_mudrok": {
+  "elite": 0,
+  "level": 2,
+  "potential": 2
+ },
+ "char_325_bison": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_328_cammou": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_333_sidero": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_337_utage": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_341_sntlla": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_345_folnic": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_347_jaksel": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_348_ceylon": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_350_surtr": {
+  "elite": 2,
+  "level": 60,
+  "potential": 1
+ },
+ "char_355_ethan": {
+  "elite": 1,
+  "level": 1,
+  "potential": 6
+ },
+ "char_356_broca": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_362_saga": {
+  "elite": 0,
+  "level": 2,
+  "potential": 1
+ },
+ "char_366_acdrop": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_367_swllow": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_369_bena": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_376_therex": {
+  "elite": 0,
+  "level": 30,
+  "potential": 1
+ },
+ "char_379_sesa": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_381_bubble": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_383_snsant": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_385_finlpp": {
+  "elite": 1,
+  "level": 60,
+  "potential": 3
+ },
+ "char_388_mint": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_394_hadiya": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_4004_pudd": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_4006_melnte": {
+  "elite": 0,
+  "level": 1,
+  "potential": 2
+ },
+ "char_400_weedy": {
+  "elite": 0,
+  "level": 50,
+  "potential": 2
+ },
+ "char_4010_etlchi": {
+  "elite": 0,
+  "level": 50,
+  "potential": 1
+ },
+ "char_4011_lessng": {
+  "elite": 0,
+  "level": 2,
+  "potential": 6
+ },
+ "char_4013_kjera": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_4014_lunacu": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_4015_spuria": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_4017_puzzle": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_401_elysm": {
+  "elite": 2,
+  "level": 40,
+  "potential": 2
+ },
+ "char_4025_aprot2": {
+  "elite": 0,
+  "level": 1,
+  "potential": 3
+ },
+ "char_4026_vulpis": {
+  "elite": 0,
+  "level": 2,
+  "potential": 1
+ },
+ "char_4027_heyak": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_4031_liesel": {
+  "elite": 0,
+  "level": 1,
+  "potential": 2
+ },
+ "char_4032_provs": {
+  "elite": 2,
+  "level": 10,
+  "potential": 2
+ },
+ "char_4036_forcer": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_4037_demetr": {
+  "elite": 2,
+  "level": 60,
+  "potential": 1
+ },
+ "char_4040_rockr": {
+  "elite": 0,
+  "level": 1,
+  "potential": 3
+ },
+ "char_4041_chnut": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_4042_lumen": {
+  "elite": 2,
+  "level": 60,
+  "potential": 6
+ },
+ "char_4045_heidi": {
+  "elite": 0,
+  "level": 1,
+  "potential": 4
+ },
+ "char_4047_pianst": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_4051_akkord": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_4052_surfer": {
+  "elite": 2,
+  "level": 40,
+  "potential": 6
+ },
+ "char_4054_malist": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_4055_bgsnow": {
+  "elite": 2,
+  "level": 60,
+  "potential": 1
+ },
+ "char_405_absin": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_4062_totter": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_4063_quartz": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_4064_mlynar": {
+  "elite": 2,
+  "level": 60,
+  "potential": 1
+ },
+ "char_4065_judge": {
+  "elite": 0,
+  "level": 4,
+  "potential": 1
+ },
+ "char_4066_highmo": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_4071_peper": {
+  "elite": 0,
+  "level": 1,
+  "potential": 4
+ },
+ "char_4072_ironmn": {
+  "elite": 0,
+  "level": 2,
+  "potential": 1
+ },
+ "char_4078_bdhkgt": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_4079_haini": {
+  "elite": 0,
+  "level": 1,
+  "potential": 2
+ },
+ "char_4081_warmy": {
+  "elite": 0,
+  "level": 1,
+  "potential": 3
+ },
+ "char_4083_chimes": {
+  "elite": 0,
+  "level": 1,
+  "potential": 3
+ },
+ "char_4087_ines": {
+  "elite": 2,
+  "level": 60,
+  "potential": 2
+ },
+ "char_4100_caper": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_4104_coldst": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_4105_almond": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_4106_bryota": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_4107_vrdant": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_4109_baslin": {
+  "elite": 0,
+  "level": 1,
+  "potential": 5
+ },
+ "char_4110_delphn": {
+  "elite": 0,
+  "level": 1,
+  "potential": 3
+ },
+ "char_4114_harold": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_4119_wanqin": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_411_tomimi": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_4121_zuole": {
+  "elite": 2,
+  "level": 60,
+  "potential": 1
+ },
+ "char_4122_grabds": {
+  "elite": 0,
+  "level": 1,
+  "potential": 4
+ },
+ "char_4130_luton": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_4131_odda": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_4132_ascln": {
+  "elite": 1,
+  "level": 63,
+  "potential": 4
+ },
+ "char_4133_logos": {
+  "elite": 2,
+  "level": 60,
+  "potential": 1
+ },
+ "char_4134_cetsyr": {
+  "elite": 2,
+  "level": 60,
+  "potential": 2
+ },
+ "char_4136_phonor": {
+  "elite": 0,
+  "level": 15,
+  "potential": 3
+ },
+ "char_4137_udflow": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_4139_papyrs": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_4140_lasher": {
+  "elite": 0,
+  "level": 1,
+  "potential": 5
+ },
+ "char_4147_mitm": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_4148_philae": {
+  "elite": 0,
+  "level": 50,
+  "potential": 1
+ },
+ "char_4151_tinman": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_4155_talr": {
+  "elite": 0,
+  "level": 1,
+  "potential": 3
+ },
+ "char_4162_cathy": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_4163_rosesa": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_4164_tecno": {
+  "elite": 0,
+  "level": 30,
+  "potential": 4
+ },
+ "char_4165_ctrail": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_4166_varkis": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_416_zumama": {
+  "elite": 0,
+  "level": 1,
+  "potential": 2
+ },
+ "char_4172_xingzh": {
+  "elite": 0,
+  "level": 1,
+  "potential": 2
+ },
+ "char_4173_nowell": {
+  "elite": 0,
+  "level": 1,
+  "potential": 3
+ },
+ "char_4177_brigid": {
+  "elite": 0,
+  "level": 1,
+  "potential": 2
+ },
+ "char_4178_alanna": {
+  "elite": 0,
+  "level": 1,
+  "potential": 2
+ },
+ "char_4179_monstr": {
+  "elite": 2,
+  "level": 60,
+  "potential": 1
+ },
+ "char_4182_oblvns": {
+  "elite": 2,
+  "level": 60,
+  "potential": 1
+ },
+ "char_4183_mortis": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_4184_dolris": {
+  "elite": 0,
+  "level": 1,
+  "potential": 3
+ },
+ "char_4185_amoris": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_4186_tmoris": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_4187_graceb": {
+  "elite": 0,
+  "level": 1,
+  "potential": 3
+ },
+ "char_4188_confes": {
+  "elite": 0,
+  "level": 15,
+  "potential": 1
+ },
+ "char_4191_tippi": {
+  "elite": 0,
+  "level": 1,
+  "potential": 3
+ },
+ "char_4194_rmixer": {
+  "elite": 0,
+  "level": 2,
+  "potential": 6
+ },
+ "char_4195_radian": {
+  "elite": 2,
+  "level": 82,
+  "potential": 6
+ },
+ "char_4196_reckpr": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_4198_christ": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_4199_makiri": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_4202_haruka": {
+  "elite": 2,
+  "level": 60,
+  "potential": 1
+ },
+ "char_4203_kichi": {
+  "elite": 0,
+  "level": 1,
+  "potential": 4
+ },
+ "char_4207_branch": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_4208_wintim": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_4211_snhunt": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_4213_skybx": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_4214_cairn": {
+  "elite": 0,
+  "level": 1,
+  "potential": 2
+ },
+ "char_4221_ju": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_4222_taraxa": {
+  "elite": 0,
+  "level": 1,
+  "potential": 2
+ },
+ "char_4223_botany": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_4225_tanya": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_4226_veen": {
+  "elite": 0,
+  "level": 1,
+  "potential": 5
+ },
+ "char_4227_gallus": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_4228_closur": {
+  "elite": 2,
+  "level": 60,
+  "potential": 3
+ },
+ "char_422_aurora": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_423_blemsh": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_427_vigil": {
+  "elite": 0,
+  "level": 2,
+  "potential": 6
+ },
+ "char_430_fartth": {
+  "elite": 1,
+  "level": 80,
+  "potential": 1
+ },
+ "char_440_pinecn": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_445_wscoot": {
+  "elite": 1,
+  "level": 60,
+  "potential": 6
+ },
+ "char_446_aroma": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_449_glider": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_451_robin": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_452_bstalk": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_464_cement": {
+  "elite": 0,
+  "level": 1,
+  "potential": 2
+ },
+ "char_466_qanik": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_469_indigo": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_473_mberry": {
+  "elite": 0,
+  "level": 50,
+  "potential": 4
+ },
+ "char_474_glady": {
+  "elite": 2,
+  "level": 60,
+  "potential": 6
+ },
+ "char_476_blkngt": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_479_sleach": {
+  "elite": 0,
+  "level": 2,
+  "potential": 1
+ },
+ "char_484_robrta": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_486_takila": {
+  "elite": 1,
+  "level": 1,
+  "potential": 6
+ },
+ "char_487_bobb": {
+  "elite": 0,
+  "level": 1,
+  "potential": 2
+ },
+ "char_488_buildr": {
+  "elite": 0,
+  "level": 1,
+  "potential": 4
+ },
+ "char_491_humus": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_492_quercu": {
+  "elite": 0,
+  "level": 1,
+  "potential": 4
+ },
+ "char_493_firwhl": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_494_vendla": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_496_wildmn": {
+  "elite": 0,
+  "level": 1,
+  "potential": 6
+ },
+ "char_497_ctable": {
+  "elite": 0,
+  "level": 10,
+  "potential": 4
+ },
+ "char_498_inside": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_499_kaitou": {
+  "elite": 0,
+  "level": 1,
+  "potential": 1
+ },
+ "char_500_noirc": {
+  "elite": 0,
+  "level": 1,
+  "potential": 3
+ },
+ "char_501_durin": {
+  "elite": 0,
+  "level": 1,
+  "potential": 4
+ },
+ "char_502_nblade": {
+  "elite": 0,
+  "level": 1,
+  "potential": 3
+ },
+ "char_503_rang": {
+  "elite": 0,
+  "level": 1,
+  "potential": 3
+ }
+}

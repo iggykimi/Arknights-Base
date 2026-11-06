@@ -563,6 +563,8 @@ Underflow,0,TP,0,,si,formula,"+25/30%. If Ulpianus is in BASE, +5/10%",TP (40% a
 Underflow,0,TP,2,,no,formula,"+25/30%. If Ulpianus is in BASE, +5/10%",TP (40% and above),TP!J240
 Utage,0,HR,0,,si,numerico,+40% HR,HR (40%),HR!H49
 Utage,0,RR,1,,no,numerico,+20% RR,RR (4* Operators),RR!N101
+Valkáris,0,CC,0,,si,no,"clue collection speed +4% for each Minos Operator in the Base; when assigned together with Sargon Operators, self Morale loss per hour +0.02",,gamedata:control_meeting&mp_cost[000]
+Valkáris,0,CC,1,,no,no,"clue collection speed +5% for each Minos Operator in the Base; when assigned together with Sargon Operators, self Morale loss per hour +0.02",,gamedata:control_meeting&mp_cost[100]
 Vanilla,1,FAC,0,,si,numerico,+25% (Standard),Mizuki - Standard Team,FAC!F156
 Vanilla,1,TP,1,,si,numerico,order acquisition efficiency +20%,,gamedata:trade_ord_spd[000]
 Vendela,0,DORM,0,,si,numerico,+0.15 AoE MR,DORM (0.21 - 0.25),DORM!P94

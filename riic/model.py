@@ -8,8 +8,9 @@ Output is measured per day with the in-game recipe numbers:
 - Tactical Battle Record (lvl 3 FAC): 1000 EXP per 180 min -> 8000 EXP/day at +0%.
 - Lvl 3 TP order mix 30/50/20% of 2/3/4-gold orders (TP!E45:I45), 500 LMD per gold
   and 144/210/276 min -> 1450 LMD per 203.4 min -> 10265 LMD/day at +0%.
-- Drones: "10% Drone Recovery Speed ~ 5% productivity" (PP!B5), all sent to the
-  best TP.
+- Drones: one every 6 min (game ``laborRecoverTime`` 360 s), each saving 3 min of a
+  TP's work (``tradingReduceTimeUnit`` 180 s), so half a TP-day at +0% recovery;
+  "10% Drone Recovery Speed ~ 5% productivity" on top (PP!B5). All go to one TP.
 """
 
 import re
@@ -493,6 +494,11 @@ class Output:
     value: float
 
 
+def drone_days(drone_pct: float) -> float:
+    """TP-days of work the day's drones save: 240 drones x 3 min at +0% recovery."""
+    return (1 + drone_pct / 100) / 2
+
+
 def economy(
     facs: list[tuple[float, str]], tps: list[TPResult], drone_pct: float, s: Settings
 ) -> Output:
@@ -503,7 +509,7 @@ def economy(
     gold_needed = sum(t.gold for t in tps)
     if tps:
         best = max(tps, key=lambda t: t.lmd)
-        extra = best.lmd * drone_pct / 2 / 100
+        extra = best.lmd * drone_days(drone_pct)
         lmd += extra
         gold_needed += extra / best.lmd_per_gold
     if gold_needed > gold_made:

@@ -1,6 +1,8 @@
-"""Parse a Krooster "Collection" text export into the owned roster.
+"""Read the owned roster from Krooster.
 
-The export is a flat list of lines. Each operator block looks like::
+Two sources: the JSON that ``python -m riic.krooster`` saves from a public profile
+(keyed by game char id, so names need no guessing), or the "Collection" page
+copied as text. The text export is a flat list of lines. Each operator block looks like::
 
     [Alter title]      <- optional, e.g. "Breacher" for Hoshiguma the Breacher
     Name
@@ -11,6 +13,7 @@ so an operator name is any line followed by a blank line, and a title is the
 non-stat line right before it.
 """
 
+import json
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -32,12 +35,16 @@ ALTER_TITLES = {
     "Distilled": "Perfumer Alter",
     "Purifier": "Hibiscus Alter",
     "Lightchaser": "Astgenne Alter",
-    # Amiya's class variants have their own base skills, absent from the guide.
+    # Amiya's class variants: no base skills of their own (not in building_data).
     "Guard": "Amiya (Guard)",
     "Medic": "Amiya (Medic)",
 }
 # Krooster spelling -> Excel spelling, where they differ beyond case/punctuation.
-RENAMES = {"Kal'tsit·Esperanta": "Kal'tsit Alter", "Miss.Christine": "Miss Christine"}
+RENAMES = {
+    "Kal'tsit·Esperanta": "Kal'tsit Alter",
+    "Miss.Christine": "Miss Christine",
+    "Varkáris": "Valkáris",
+}
 # Krooster prints "Maxed" instead of stats for fully promoted low rarities; the export
 # carries no rarity, so the max promotion is listed per operator: (elite, level).
 MAXED = {"Melantha": (1, 55), "12F": (0, 30)}
@@ -92,5 +99,21 @@ def parse_collection(text: str) -> dict[str, Owned]:
     return roster
 
 
-def load_roster(path: Path) -> dict[str, Owned]:
-    return parse_collection(path.read_text(encoding="utf-8"))
+def parse_krooster(data: dict[str, dict], names: dict[str, str]) -> dict[str, Owned]:
+    """Krooster's roster data (``python -m riic.krooster``): char id -> elite, level,
+    potential. ``names`` maps char ids to the guide's spelling."""
+    roster: dict[str, Owned] = {}
+    for cid, o in data.items():
+        name = names[cid]
+        if name in roster:
+            raise ValueError(f"Duplicate operator {name!r} in roster")
+        roster[name] = Owned(name, o["elite"], o["level"], o["potential"])
+    return roster
+
+
+def load_roster(path: Path, names: dict[str, str]) -> dict[str, Owned]:
+    """A Krooster roster: ``.json`` from the network lookup or the Collection page as text."""
+    text = path.read_text(encoding="utf-8")
+    if path.suffix == ".json":
+        return parse_krooster(json.loads(text), names)
+    return parse_collection(text)

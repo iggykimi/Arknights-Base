@@ -32,7 +32,8 @@ ROOT = Path(__file__).resolve().parent.parent
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--excel", type=Path, default=ROOT / "Arknights Base Combo Guide.xlsx")
-    ap.add_argument("--collection", type=Path, default=ROOT / "Collection.txt")
+    ap.add_argument("--collection", type=Path, default=ROOT / "Collection.txt",
+                    help="Krooster Collection page (.txt) or rosters/USER.json")  # fmt: skip
     ap.add_argument("--out", type=Path, default=ROOT)
     ap.add_argument("--cache", type=Path, default=ROOT / ".cache" / "gamedata")
     ap.add_argument("--layout", choices=sorted(LAYOUTS), default="243")
@@ -44,13 +45,13 @@ def main() -> None:
     settings = Settings(
         args.layout, args.office_level, exp_weight=args.exp_weight, gold_facs=args.gold_facs
     )
-    skills = all_skills(args.excel, args.cache)
-    r = Roster(load_roster(args.collection), skills)
+    skills, names = all_skills(args.excel, args.cache)
+    r = Roster(load_roster(args.collection, names), skills)
     plan = build_plan(r, settings)
 
     write_skills(r, args.out / "skills_owned.csv")
     rows = facility_rows(plan, r)
-    text = render_plan(plan, r, rows)
+    text = render_plan(plan, r, rows, args.collection.name)
     (args.out / "base_plan.md").write_text(text, encoding="utf-8", newline="\n")
     print(args.out / "base_plan.md", args.out / "skills_owned.csv", sep="\n")
 
@@ -136,21 +137,21 @@ def _shift_table(rows: list[dict], name: str) -> list[str]:
     return out
 
 
-def render_plan(plan: Plan, r: Roster, rows: list[dict]) -> str:
+def render_plan(plan: Plan, r: Roster, rows: list[dict], source: str) -> str:
     s = plan.settings
     lines = [
         f"# Plan de base ({s.layout[0]}-{s.layout[1]}-{s.layout[2]}, roster actual)",
         "",
         (
-            "Generado con `python -m riic` a partir de `Collection.txt`, "
+            f"Generado con `python -m riic` a partir de `{source}`, "
             "`Arknights Base Combo Guide.xlsx` y los datos del juego EN (las habilidades que "
             "la guía no lista). No editar a mano: cambia el roster o los supuestos y vuelve a "
             "generarlo."
         ),
         "",
         (
-            "El turno A es la mejor asignación posible; el turno B es la mejor con los "
-            "operadores que quedan, para rotar cada 12 h. «Horas» es lo que aguanta el "
+            "Los dos turnos se eligen a la vez para rotar cada 12 h; el A es el que más "
+            "produce. «Horas» es lo que aguanta el "
             "operador que antes se queda sin moral (24 de moral, CC lvl 5)."
         ),
     ]
@@ -162,7 +163,11 @@ def render_plan(plan: Plan, r: Roster, rows: list[dict]) -> str:
             f"- **EXP/día:** {out.exp:,.0f}".replace(",", "."),
             f"- **Oro:** {out.gold_made:.1f} barras/día fabricadas, "
             f"{out.gold_needed:.1f} pedidas por los TP (drones incluidos)"
-            + (" — **faltará oro**" if out.gold_needed > out.gold_made + 0.5 else ""),
+            + (
+                " — los TP podrían vender más; el LMD ya cuenta solo el oro fabricado"
+                if out.gold_needed > out.gold_made + 0.5
+                else ""
+            ),
             f"- **Drones:** +{out.drone_pct:.0f}% de recuperación, al TP que más LMD da",
         ]
         short = [x for x in rows if x["turno"] == name and x["horas_min"] < 12]
@@ -193,7 +198,10 @@ def render_plan(plan: Plan, r: Roster, rows: list[dict]) -> str:
             "- Pedidos lvl 3: 30/50/20% de 2/3/4 oros, 500 LMD por oro (TP!E45). "
             "Proviso E2 ×1.5517 (TP!J193); Closure: 1200 LMD por 2 oros en 144 min (NEW!F23)."
         ),
-        "- Drones: 10% de recuperación ≈ 5% de productividad (PP!B5), todos al mejor TP.",
+        (
+            "- Drones: uno cada 6 min y 3 min de trabajo cada uno (datos del juego), medio "
+            "día de TP con +0% de recuperación; cada 10% más ≈ 5% (PP!B5). Todos a un TP."
+        ),
         "- Rampas (Ceobe, Fang, Kroos, Ines, Spuria): media de las primeras 12 h, como el Excel.",
         "- Greyy Alter: 23% (+1% por cada 10 de capacidad de drones; 235 en EN, PP!B65).",
         "- Dawnstreak = Ch'en Alter 2 (char_1050_chen3), comprobado con los datos del juego.",

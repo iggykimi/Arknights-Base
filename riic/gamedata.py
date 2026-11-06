@@ -111,14 +111,26 @@ def download(cache: Path) -> Path:
     return folder
 
 
+# Amiya's class variants live in patch_table, not character_table. They have no base
+# skills of their own: in the base they are Amiya.
+PATCH_NAMES = {"char_1001_amiya2": "Amiya (Guard)", "char_1037_amiya3": "Amiya (Medic)"}
+
+
+def char_names(folder: Path, excel_names: dict[str, str]) -> dict[str, str]:
+    """Char id -> operator name, in the guide's spelling where the guide has it
+    (``excel_names``: char id -> guide name)."""
+    chars = json.loads((folder / "character_table.json").read_text(encoding="utf-8"))
+    return {cid: c["name"] for cid, c in chars.items()} | PATCH_NAMES | excel_names
+
+
 def load_skills(folder: Path, excel_names: dict[str, str]) -> list[Skill]:
     """Every base skill in the game, named like the guide where the guide has the
     character (``excel_names``: char id -> guide name)."""
-    chars = json.loads((folder / "character_table.json").read_text(encoding="utf-8"))
+    names = char_names(folder, excel_names)
     building = json.loads((folder / "building_data.json").read_text(encoding="utf-8"))
     skills = []
     for cid, entry in building["chars"].items():
-        name = excel_names.get(cid) or chars.get(cid, {}).get("name")
+        name = names.get(cid)
         if not name:
             continue
         for slot in entry["buffChar"]:
@@ -158,10 +170,11 @@ def fill_gaps(excel: list[Skill], game: list[Skill]) -> list[Skill]:
     return excel + [s for s in game if (s.operator, s.facility, s.elite) not in covered]
 
 
-def all_skills(workbook: Path, cache: Path) -> list[Skill]:
-    """The guide's skills, completed with the game's."""
-    game = load_skills(download(cache), operator_ids(workbook))
-    return fill_gaps(extract_skills(workbook), game)
+def all_skills(workbook: Path, cache: Path) -> tuple[list[Skill], dict[str, str]]:
+    """The guide's skills, completed with the game's, and char id -> operator name."""
+    folder, excel_names = download(cache), operator_ids(workbook)
+    game = load_skills(folder, excel_names)
+    return fill_gaps(extract_skills(workbook), game), char_names(folder, excel_names)
 
 
 def rarities(folder: Path, excel_names: dict[str, str]) -> dict[str, int]:

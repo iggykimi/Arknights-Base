@@ -12,7 +12,6 @@ from dataclasses import replace
 from pathlib import Path
 
 from . import optimize
-from .excel import operator_ids
 from .gamedata import all_skills, download, rarities
 from .model import MODELLED, Roster, Settings
 from .optimize import Plan, build_plan, plan_value
@@ -92,9 +91,9 @@ def main() -> None:
     args = ap.parse_args()
 
     settings = Settings()
-    skills = all_skills(args.excel, args.cache)
-    stars = rarities(download(args.cache), operator_ids(args.excel))
-    r = Roster(load_roster(args.collection), skills)
+    skills, names = all_skills(args.excel, args.cache)
+    stars = rarities(download(args.cache), names)
+    r = Roster(load_roster(args.collection, names), skills)
     optimize.MIP_GAP = GAP
     current = build_plan(r, settings)
     base_lmd, base_exp, _ = daily(r, current)
@@ -111,6 +110,10 @@ def main() -> None:
         gain = (lmd - base_lmd) + (exp - base_exp) * settings.exp_weight
         rows.append((gain, op, target, lmd - base_lmd, exp - base_exp, where))
     rows.sort(reverse=True)
+    # A rebuilt plan that leaves the promoted operator out is just another plan for
+    # the current roster: its gain measures how far build_plan is from the optimum.
+    noise = max((g for g, *_, where in rows if where == OUT), default=0.0)
+    floor = max(TIE, noise)
 
     lines = [
         "# Promociones que merecen la pena para la base",
@@ -124,6 +127,12 @@ def main() -> None:
         "",
         f"Plan actual: {base_lmd:,.0f} LMD + {base_exp:,.0f} EXP al día.".replace(",", "."),
         "",
+        (
+            f"Ruido del optimizador: {noise:+,.0f} al día (la mayor ganancia de un operador que "
+            "no entra en el plan, que solo puede venir de encontrar otro plan mejor). Las "
+            "ganancias por debajo de eso no son fiables: «(ruido)»."
+        ).replace(",", "."),
+        "",
         "| Operador | Promoción | Ganancia/día | LMD | EXP | Dónde trabaja | Qué desbloquea |",
         "|---|---|---|---|---|---|---|",
     ]
@@ -132,7 +141,7 @@ def main() -> None:
         unlocks = "; ".join(
             sorted({f"{s.facility} E{s.elite}: {s.text[:70]}" for s in texts[(op, target)]})
         )
-        mark = "" if gain >= TIE else " (nada)"
+        mark = "" if gain > floor else " (nada)" if gain < TIE else " (ruido)"
         lines.append(
             f"| {op} ({stars.get(op, '?')}★) | E{o.elite}→E{target} | {gain:+,.0f}{mark} "
             f"| {d_lmd:+,.0f} | {d_exp:+,.0f} | {where} | {unlocks} |".replace(",", ".")

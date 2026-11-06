@@ -7,6 +7,7 @@ so they are chosen around that core and the whole is repeated until the
 assignment stops changing.
 """
 
+import sys
 from dataclasses import dataclass, replace
 from itertools import combinations
 
@@ -29,6 +30,7 @@ from .model import (
     cc_buffs,
     dorm_aoe,
     dorm_st,
+    drone_days,
     economy,
     evaluate,
     fac_pct,
@@ -39,7 +41,10 @@ from .model import (
 )
 
 PER_OPERATOR = 20  # candidate teams kept per operator and kind
+LAYERS = 3  # one per shift and one of slack (see _diverse)
 MIP_GAP = 1e-3  # see _production; comparisons between plans need a tighter one
+CC_TOP = 8  # CC options per shift tried in _best_ccs
+SEED_GAP = 0.02  # first round: both shifts look alike and proving 0.1% takes minutes
 
 
 @dataclass
@@ -85,24 +90,37 @@ def _teams(r: Roster, ctx: Context, available: set[str]):
     for team in combinations(sorted(tp_pool), 3):
         if res := tp_result(team, r, ctx):
             teams.append(("TP", team, res.lmd, res))
-    by_kind = [_diverse([t for t in teams if t[0] == kind]) for kind in ("Gold", "EXP", "TP")]
+    s = ctx.settings
+    by_kind = [
+        _diverse([t for t in teams if t[0] == kind], n)
+        for kind, n in (("Gold", s.fac_count), ("EXP", s.fac_count), ("TP", s.tp_count))
+    ]
     return [t for kind in by_kind for t in kind]
 
 
-def _production(r: Roster, ctxs: list[Context], available: set[str], drones: list[float]):
+def _production(
+    r: Roster, ctxs: list[Context], available: set[str], drones: list[float], seed=False
+):
     """Best FAC and TP teams for every shift at once, as an integer program.
 
     One binary per candidate team and shift, and one continuous "LMD sold" per TP
     team, bounded by what the team can sell and, per shift, by the gold that
-    shift's Gold FACs make. The drones' extra LMD is a constant upper bound on the
-    shift's best TP, also paid in gold. Returns [(facs, tps)] per shift."""
+    shift's Gold FACs make. Each TP team also has a twin that takes the shift's
+    drones, worth ``1 + drone_days`` times its LMD; at most one per shift. The
+    twin keeps the drones linear: no binary has to pick the best TP afterwards.
+    ``seed``: a first guess for build_plan's rounds, solved loosely.
+    Returns [(facs, tps)] per shift."""
     s = ctxs[0].settings
     teams = [(k, *t) for k, ctx in enumerate(ctxs) for t in _teams(r, ctx, available)]
+    teams += [
+        (k, "TPD", team, value * (1 + drone_days(drones[k])), res)
+        for k, kind, team, value, res in teams
+        if kind == "TP"
+    ]
     n = len(teams)
-    tp_idx = [i for i, t in enumerate(teams) if t[1] == "TP"]
+    tp_idx = [i for i, t in enumerate(teams) if t[1] in ("TP", "TPD")]
     y_col = {i: n + j for j, i in enumerate(tp_idx)}  # LMD sold by TP team i
-    d_col = [n + len(tp_idx) + k for k in range(len(ctxs))]  # drone LMD per shift
-    n_vars = n + len(tp_idx) + len(ctxs)
+    n_vars = n + len(tp_idx)
 
     c = np.zeros(n_vars)
     for i, (_, kind, _, value, _) in enumerate(teams):
@@ -128,72 +146,108 @@ def _production(r: Roster, ctxs: list[Context], available: set[str], drones: lis
         add([(i, 1) for i in idx], 0, 1)  # one team, one shift
     for k in range(len(ctxs)):
         mine = [i for i, t in enumerate(teams) if t[0] == k]
-        add([(i, 1) for i in mine if teams[i][1] != "TP"], 0, s.fac_count)
+        add([(i, 1) for i in mine if i not in y_col], 0, s.fac_count)
         if s.gold_facs is not None:
             add([(i, 1) for i in mine if teams[i][1] == "Gold"], s.gold_facs, s.gold_facs)
-        add([(i, 1) for i in mine if teams[i][1] == "TP"], 0, s.tp_count)
+        add([(i, 1) for i in mine if i in y_col], 0, s.tp_count)
+        add([(i, 1) for i in mine if teams[i][1] == "TPD"], 0, 1)  # drones go to one TP
         gold = [(i, -teams[i][3]) for i in mine if teams[i][1] == "Gold"]
         gold += [(y_col[i], 1 / teams[i][4].lmd_per_gold) for i in mine if i in y_col]
-        add([*gold, (d_col[k], 1 / 500)], -np.inf, 0)  # gold sold <= gold made
+        add(gold, -np.inf, 0)  # gold sold <= gold made
     for i in tp_idx:
         add([(y_col[i], 1), (i, -teams[i][3])], -np.inf, 0)  # sold <= capacity
 
-    drone_cap = []
-    for k in range(len(ctxs)):
-        best_tp = max((t[3] for t in teams if t[0] == k and t[1] == "TP"), default=0)
-        drone_cap.append(best_tp * drones[k] / 2 / 100)
-    upper = np.r_[np.ones(n), np.full(len(tp_idx), np.inf), drone_cap]
     res = milp(
         c,
         constraints=LinearConstraint(
             sparse.csr_array((vals, (rows, cols)), shape=(len(lo), n_vars)), lo, hi
         ),
         integrality=np.r_[np.ones(n), np.zeros(n_vars - n)],
-        bounds=Bounds(np.zeros(n_vars), upper),
+        bounds=Bounds(np.zeros(n_vars), np.r_[np.ones(n), np.full(len(tp_idx), np.inf)]),
         # Within 0.1% of the optimum is far below the guide's own rounding; some
         # CC buffs make HiGHS spend minutes proving the last decimals otherwise.
-        options={"mip_rel_gap": MIP_GAP, "time_limit": 120},
+        options={"mip_rel_gap": SEED_GAP if seed else MIP_GAP, "time_limit": 30 if seed else 120},
     )
     if res.x is None:
         raise RuntimeError(f"MILP failed: {res.message}")
+    if res.status != 0:  # time limit: a plan, but not proven within MIP_GAP
+        print(f"aviso: {res.message} (gap {res.mip_gap:.2%})", file=sys.stderr)
     out = []
     for k in range(len(ctxs)):
         chosen = [teams[i] for i in range(n) if teams[i][0] == k and res.x[i] > 0.5]
-        facs = [(team, kind) for _, kind, team, _, _ in chosen if kind != "TP"]
-        out.append((facs, [team for _, kind, team, _, _ in chosen if kind == "TP"]))
+        facs = [(team, kind) for _, kind, team, _, _ in chosen if kind in ("Gold", "EXP")]
+        out.append((facs, [team for _, kind, team, _, _ in chosen if kind in ("TP", "TPD")]))
     return out
 
 
-def _diverse(teams: list[tuple[str, tuple[str, ...], float]]) -> list:
-    """Keep the PER_OPERATOR best teams each operator is in.
+def _diverse(teams: list[tuple[str, tuple[str, ...], float]], per_shift: int) -> list:
+    """Keep the PER_OPERATOR best teams each operator is in, in layers.
 
-    A team below every member's top list would need all its members to be
-    unusable elsewhere to be worth picking; dropping those cuts the solve from
-    ~38 s to ~3 s on this roster with the same result."""
-    seen: dict[str, int] = {}
-    kept = []
-    for t in sorted(teams, key=lambda t: -t[2]):
-        if any(seen.get(o, 0) < PER_OPERATOR for o in t[1]):
-            kept.append(t)
-            for o in t[1]:
-                seen[o] = seen.get(o, 0) + 1
-    return kept
+    A team below every member's top list is only worth picking when its better
+    partners are busy, which is exactly what happens to the second shift: the top
+    lists of second-tier operators are full of teams with the first shift's stars.
+    So after each layer the members of its ``per_shift`` best disjoint teams are
+    set aside and the rest is pruned again. With one layer chiro10's shift B got
+    no TP; three layers beat two layers of 30 or 45 teams per operator."""
+    pool = sorted(teams, key=lambda t: -t[2])
+    kept: dict[tuple[str, ...], tuple] = {}
+    for _ in range(LAYERS):
+        seen: dict[str, int] = {}
+        busy: set[str] = set()
+        picked = 0
+        for t in pool:
+            if any(seen.get(o, 0) < PER_OPERATOR for o in t[1]):
+                kept.setdefault(t[1], t)
+                for o in t[1]:
+                    seen[o] = seen.get(o, 0) + 1
+                if picked < per_shift and not busy & set(t[1]):
+                    busy |= set(t[1])
+                    picked += 1
+        pool = [t for t in pool if not busy & set(t[1])]
+    return list(kept.values())
 
 
-def _best_cc(r, ctx: Context, available: set[str], facs, tps) -> tuple[str, ...]:
-    """Productive CC members for these teams; ties go to fewer and earlier members."""
+def _cc_options(r, ctx: Context, available: set[str], facs, tps, drone: float) -> list:
+    """(value, CC) for every distinct set of CC buffs with these teams, best first.
+
+    Of the CCs giving the same buffs only the first is kept: fewer and earlier
+    members."""
     s = ctx.settings
     cands = [o for o in CC_PRODUCTIVE if o in available and r.has(o)]
-    best_val, best_cc = -1.0, ()
+    options: dict = {}
     for size in range(6):
         for cc in combinations(cands, size):
             ctx.cc = cc_buffs(cc, r, s)
+            if ctx.cc in options:
+                continue
             f = [(fac_pct(t, p, r, ctx), p) for t, p in facs]
             t = [x for x in (tp_result(t, r, ctx) for t in tps) if x]
-            val = economy(f, t, 0, s).value
-            if val > best_val + 1e-6:
-                best_val, best_cc = val, cc
-    return best_cc
+            options[ctx.cc] = (economy(f, t, drone, s).value, cc)
+    return sorted(options.values(), key=lambda o: -round(o[0], 6))
+
+
+def _best_ccs(r, ctxs: list[Context], available: set[str], production, drones) -> list:
+    """Productive CCs of both shifts, chosen together.
+
+    Both draw from one pool, so choosing shift A's first can split a band across
+    the shifts (Ave Mujica: Passion only counts within one CC). Each shift's
+    CC_TOP best options are tried with the other shift's best CC from who is left."""
+    opts = [
+        _cc_options(r, ctx, available, facs, tps, d)
+        for ctx, (facs, tps), d in zip(ctxs, production, drones)
+    ]
+    best = (-1.0, ((), ()))
+    for first in (0, 1):
+        other = 1 - first
+        for value, cc in opts[first][:CC_TOP]:
+            ctx, (facs, tps) = ctxs[other], production[other]
+            rest = _cc_options(r, ctx, available - set(cc), facs, tps, drones[other])[0]
+            pair = (cc, rest[1]) if first == 0 else (rest[1], cc)
+            if value + rest[0] > best[0] + 1e-6:
+                best = (value + rest[0], pair)
+    for ctx, cc in zip(ctxs, best[1]):
+        ctx.cc = cc_buffs(cc, r, ctxs[0].settings)
+    return list(best[1])
 
 
 def _fill_cc(cc: tuple[str, ...], r: Roster, s: Settings, available: set[str]):
@@ -256,6 +310,48 @@ def _dorms(r: Roster, s: Settings, available: set[str]):
     ]
 
 
+def _round(plan: Plan, r: Roster, pool: set[str], seed: bool) -> list[Shift]:
+    """Production for the CC/PP of ``plan``, then PP, CC, RR and HR around it."""
+    s = plan.settings
+    shifts = [plan.a, plan.b]
+    ctxs = [plan.context(sh, r) for sh in shifts]
+    drones = [sum(pp_pct(o, r, c) for o in sh.pps) for sh, c in zip(shifts, ctxs)]
+    available = pool - set(plan.a.cc) - set(plan.b.cc)
+    production = _production(r, ctxs, available, drones, seed=seed)
+    used = {o for facs, tps in production for t in [*(t for t, _ in facs), *tps] for o in t}
+    pps = []
+    for ctx in ctxs:
+        pp_pool = (r.in_facility("PP") & pool) - used
+        pps.append(sorted(pp_pool, key=lambda o: (-pp_pct(o, r, ctx), o))[: s.pp_count])
+        used |= set(pps[-1])
+    drones = [sum(pp_pct(o, r, c) for o in pp) for pp, c in zip(pps, ctxs)]
+    ccs = _best_ccs(r, ctxs, pool - used, production, drones)
+    used |= {o for cc in ccs for o in cc}
+    new = []
+    for (facs, tps), ctx, pp, cc in zip(production, ctxs, pps, ccs):
+        rr = _best_rr(r, ctx, pool - used)
+        used |= set(rr)
+        hr = _best_hr(r, ctx, pool - used)
+        used |= {hr} - {None}
+        new.append(Shift(cc, facs, tps, pp, rr, hr))
+    return new
+
+
+def _converge(plan: Plan, r: Roster, pool: set[str], rounds: int, seed: bool):
+    """(value, [A, B]) of the best rounds from ``plan``'s shifts; rounds can cycle
+    between two assignments, so the best one seen is kept, not the last."""
+    best = (-1.0, [plan.a, plan.b])
+    for round_ in range(rounds):
+        new = _round(plan, r, pool, seed=seed and round_ == 0)
+        if new == [plan.a, plan.b]:
+            break
+        plan.a, plan.b = new
+        value = sum(plan_value(plan, r, sh).value for sh in new)
+        if value > best[0] + 1e-6:
+            best = (value, new)
+    return best
+
+
 def build_plan(r: Roster, s: Settings, rounds: int = 6) -> Plan:
     everyone = set(r.owned)
     trainer = "Logos" if r.has("Logos", 2) else None  # TR!J28: unique trainer
@@ -264,29 +360,13 @@ def build_plan(r: Roster, s: Settings, rounds: int = 6) -> Plan:
     plan.workshop = _workshop(r, everyone - {trainer})
     pool = everyone - {trainer, plan.workshop}
 
-    for _ in range(rounds):
-        shifts = [plan.a, plan.b]
-        ctxs = [plan.context(sh, r) for sh in shifts]
-        drones = [sum(pp_pct(o, r, c) for o in sh.pps) for sh, c in zip(shifts, ctxs)]
-        production = _production(r, ctxs, pool - set(plan.a.cc) - set(plan.b.cc), drones)
-        used = {o for facs, tps in production for t in [*(t for t, _ in facs), *tps] for o in t}
-        new = []
-        for (facs, tps), ctx in zip(production, ctxs):
-            pps = sorted(
-                (r.in_facility("PP") & pool) - used, key=lambda o: (-pp_pct(o, r, ctx), o)
-            )[: s.pp_count]
-            used |= set(pps)
-            cc = _best_cc(r, ctx, pool - used, facs, tps)
-            used |= set(cc)
-            ctx.cc = cc_buffs(cc, r, s)
-            rr = _best_rr(r, ctx, pool - used)
-            used |= set(rr)
-            hr = _best_hr(r, ctx, pool - used)
-            used |= {hr} - {None}
-            new.append(Shift(cc, facs, tps, pps, rr, hr))
-        if new == [plan.a, plan.b]:
-            break
-        plan.a, plan.b = new
+    # Production and CC are chosen in turns, and where that stops depends on where
+    # it starts: a second start swaps the shifts' CCs (a band can be worth more in
+    # the other shift). The best plan seen is kept.
+    best = _converge(plan, r, pool, rounds, seed=True)
+    plan.a, plan.b = replace(best[1][0], cc=best[1][1].cc), replace(best[1][1], cc=best[1][0].cc)
+    best = max(best, _converge(plan, r, pool, rounds, seed=False), key=lambda b: b[0])
+    plan.a, plan.b = best[1]
 
     if plan_value(plan, r, plan.b).value > plan_value(plan, r, plan.a).value:
         plan.a, plan.b = plan.b, plan.a  # A is the stronger shift

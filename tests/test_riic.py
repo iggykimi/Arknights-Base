@@ -10,8 +10,27 @@ import pytest
 
 from riic import model
 from riic.excel import extract_skills, norm, operator_ids
-from riic.gamedata import ROOMS, clean, download, fill_gaps, load_skills, parse_description
-from riic.model import Context, Roster, Settings, cc_buffs, fac_pct, rr_pct, tp_result
+from riic.gamedata import (
+    ROOMS,
+    char_names,
+    clean,
+    download,
+    fill_gaps,
+    load_skills,
+    parse_description,
+)
+from riic.model import (
+    LMD_PER_GOLD,
+    Context,
+    Roster,
+    Settings,
+    TPResult,
+    cc_buffs,
+    economy,
+    fac_pct,
+    rr_pct,
+    tp_result,
+)
 from riic.optimize import _production, all_assigned, build_plan, plan_value
 from riic.roster import Owned, load_roster
 
@@ -37,8 +56,18 @@ def skills(guide_skills, game_skills):
 
 
 @pytest.fixture(scope="session")
-def roster(skills):
-    return Roster(load_roster(ROOT / "Collection.txt"), skills)
+def names():
+    return char_names(download(ROOT / ".cache" / "gamedata"), operator_ids(WORKBOOK))
+
+
+@pytest.fixture(scope="session")
+def roster(skills, names):
+    return Roster(load_roster(ROOT / "Collection.txt", names), skills)
+
+
+@pytest.fixture(scope="session")
+def chiro10(skills, names):
+    return Roster(load_roster(ROOT / "rosters" / "chiro10.json", names), skills)
 
 
 def ctx_with(cc, r, ines=False):
@@ -56,6 +85,38 @@ def test_collection_promotions(roster):
     assert o["Melantha"].elite == 1  # listed as "Maxed"
     assert o["Warmy"].elite == 0
     assert o["Durin"].level == 30
+
+
+@pytest.mark.parametrize("which", ["roster", "chiro10"])
+def test_every_owned_operator_has_skills(which, request, skills):
+    # Krooster's "Varkáris" once kept Valkáris out of every plan without an error.
+    r = request.getfixturevalue(which)
+    no_skills = {"Amiya (Guard)", "Amiya (Medic)"}  # not in building_data: they are Amiya
+    assert sorted(set(r.owned) - no_skills - {s.operator for s in skills}) == []
+
+
+def test_chiro10_promotions(chiro10):
+    o = chiro10.owned
+    assert len(o) == 272
+    assert (o["Amiya"].elite, o["Amiya"].level, o["Amiya"].potential) == (2, 60, 6)
+    assert "Amiya (Guard)" in o and "Amiya (Medic)" in o
+
+
+def test_drones_follow_the_game():
+    """240 drones a day (laborRecoverTime) x 3 min each (tradingReduceTimeUnit) at +0%
+    recovery; PP!B5: each +10% recovery adds ~5% of the TP's output."""
+    folder = download(ROOT / ".cache" / "gamedata")
+    b = json.loads((folder / "building_data.json").read_text(encoding="utf-8"))
+    base = 86400 / b["laborRecoverTime"] * b["tradingReduceTimeUnit"] / 86400
+    tp = TPResult(0, 1.0, LMD_PER_GOLD)
+    for drone_pct in (0, 10, 78):
+        out = economy([(0, "Gold")] * 10, [tp], drone_pct, Settings())
+        expected = tp.lmd * (1 + base * (1 + drone_pct / 100))
+        assert out.lmd == pytest.approx(expected)
+    plus_10 = economy([(0, "Gold")] * 10, [tp], 10, Settings()).lmd
+    assert plus_10 - economy([(0, "Gold")] * 10, [tp], 0, Settings()).lmd == pytest.approx(
+        0.05 * tp.lmd
+    )
 
 
 def test_skill_clauses(skills):
@@ -238,16 +299,22 @@ def test_fixed_gold_factories(roster):
         assert sorted(p for _, p in facs) == ["EXP", "EXP", "Gold", "Gold"]
 
 
-def test_plan_end_to_end(roster):
+@pytest.mark.parametrize("which", ["roster", "chiro10"])
+def test_plan_end_to_end(which, request):
+    roster = request.getfixturevalue(which)
     plan = build_plan(roster, Settings())
     ops = all_assigned(plan)
     assert len(ops) == len(set(ops)), "an operator is in two places"
     assert set(ops) <= set(roster.owned)
     for shift in (plan.a, plan.b):
+        # chiro10's shift B once got no TP: every pruned candidate had shift A's stars.
+        assert (len(shift.facs), len(shift.tps)) == (4, 2), "a facility is left empty"
         for team, _ in shift.facs:
             assert all(roster.active.get((o, "FAC")) for o in team)
         for team in shift.tps:
             assert all(roster.active.get((o, "TP")) for o in team)
         out = plan_value(plan, roster, shift)
-        assert out.gold_needed <= out.gold_made * 1.02, "TPs sell more gold than FACs make"
+        # TPs may be able to sell more than the FACs make (drones add half a TP-day),
+        # but only the gold made is paid: 600 LMD per bar at most (Closure, NEW!F23).
+        assert out.lmd <= out.gold_made * 600 + 1, "LMD counted for gold never made"
     assert plan_value(plan, roster, plan.a).value >= plan_value(plan, roster, plan.b).value
