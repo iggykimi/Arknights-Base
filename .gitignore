@@ -2,3 +2,6 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 .cache/
+
+# Community guide, downloaded by each user (see README)
+Arknights Base Combo Guide.xlsx
