@@ -32,13 +32,17 @@ from riic.roster import load_roster
 OUT = ROOT / "docs" / "figures"
 RESULTS = OUT / "results.json"
 
-# Reference palette of the chart style used here: slot 1 and 2, validated as a pair.
+# Shared style of the owner's README graphics: transparent background, one file per
+# GitHub theme. LMD (and gold, which becomes LMD) is accent 1, EXP accent 2.
 THEMES = {
-    "light": {"surface": "#fcfcfb", "text": "#0b0b0b", "text2": "#52514e",
-              "muted": "#898781", "grid": "#e1e0d9", "lmd": "#2a78d6", "exp": "#eb6834"},
-    "dark": {"surface": "#1a1a19", "text": "#f0efec", "text2": "#c3c2b7",
-             "muted": "#898781", "grid": "#2c2c2a", "lmd": "#3987e5", "exp": "#d95926"},
+    "light": {"text": "#1f2328", "muted": "#59636e", "line": "#d1d9e0",
+              "lmd": "#1f8a70", "exp": "#5b5bd6", "neutral": "#8c959f"},
+    "dark": {"text": "#e6edf3", "muted": "#9198a1", "line": "#3d444d",
+             "lmd": "#22d3a7", "exp": "#8b8bf0", "neutral": "#6e7681"},
 }  # fmt: skip
+FONT = "system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif"
+PLAN = PLAYERS / "iggykimi" / "base_plan.md"
+SHIFT = "A"
 
 
 def greedy(plan, r: Roster):
@@ -98,11 +102,11 @@ def svg(rows: list[dict], t: dict) -> str:
     top = 72
     scale = (w - left - right) / max(x["milp"]["lmd"] + x["milp"]["exp"] for x in rows)
     h = top + len(rows) * (head + 2 * bar + gap + group_gap) - group_gap + 20
-    font = "font-family:system-ui,-apple-system,'Segoe UI',sans-serif"
     out = [
         (
             f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" '
-            f'viewBox="0 0 {w} {h}" role="img" aria-labelledby="title desc" style="{font}">'
+            f'viewBox="0 0 {w} {h}" role="img" aria-labelledby="title desc" '
+            f'font-family="{FONT}">'
         ),
         "<title id='title'>Daily output: greedy assignment vs optimised plan</title>",
         "<desc id='desc'>"
@@ -112,7 +116,6 @@ def svg(rows: list[dict], t: dict) -> str:
             for x in rows
         )
         + " per day.</desc>",
-        f'<rect width="{w}" height="{h}" rx="8" fill="{t["surface"]}"/>',
         (
             f'<text x="20" y="30" font-size="16" font-weight="600" fill="{t["text"]}">'
             "LMD + EXP per day, 12 h rotation</text>"
@@ -122,12 +125,12 @@ def svg(rows: list[dict], t: dict) -> str:
     lx = 20
     for key, label in (("lmd", "LMD"), ("exp", "EXP (1 EXP = 1 LMD)")):
         out.append(f'<rect x="{lx}" y="44" width="12" height="12" rx="3" fill="{t[key]}"/>')
-        out.append(f'<text x="{lx + 18}" y="54" font-size="13" fill="{t["text2"]}">{label}</text>')
+        out.append(f'<text x="{lx + 18}" y="54" font-size="13" fill="{t["muted"]}">{label}</text>')
         lx += 18 + 8 * len(label) + 24
     y = top
     for x in rows:
         out.append(
-            f'<text x="20" y="{y + 16}" font-size="14" font-weight="600" fill="{t["text"]}">'
+            f'<text x="20" y="{y + 16}" font-size="13" font-weight="600" fill="{t["text"]}">'
             f'{x["player"]} <tspan font-weight="400" fill="{t["muted"]}">'
             f"({x['operators']} operators)</tspan></text>"
         )
@@ -137,7 +140,7 @@ def svg(rows: list[dict], t: dict) -> str:
             v = x[key]
             out.append(
                 f'<text x="{left - 10}" y="{y + bar / 2 + 5}" font-size="13" text-anchor="end" '
-                f'fill="{t["text2"]}">{label}</text>'
+                f'fill="{t["text"]}">{label}</text>'
             )
             x0 = left
             for part in ("lmd", "exp"):
@@ -148,7 +151,7 @@ def svg(rows: list[dict], t: dict) -> str:
                 width_drawn = width - (2 if part == "lmd" and v["exp"] else 0)
                 out.append(
                     f'<rect x="{x0:.1f}" y="{y}" width="{width_drawn:.1f}" height="{bar}" '
-                    f'rx="4" fill="{t[part]}"/>'
+                    f'rx="6" fill="{t[part]}"/>'
                 )
                 x0 += width
             total = v["lmd"] + v["exp"]
@@ -163,7 +166,7 @@ def svg(rows: list[dict], t: dict) -> str:
         y += group_gap - gap
         out.append(
             f'<line x1="20" x2="{w - 20}" y1="{y - group_gap / 2}" y2="{y - group_gap / 2}" '
-            f'stroke="{t["grid"]}" stroke-width="1"/>'
+            f'stroke="{t["line"]}" stroke-width="1"/>'
         )
     out.pop()  # no rule under the last group
     out.append("</svg>")
