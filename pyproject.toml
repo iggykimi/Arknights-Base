@@ -1,7 +1,11 @@
 [project]
 name = "riic"
 version = "0.1.0"
-description = "Arknights base (RIIC) planner for an owned roster"
+description = "Plans an Arknights base (RIIC) for a player's roster with mixed-integer linear programming"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Ignacio Montero Gil" }]
 requires-python = ">=3.12"
 dependencies = ["numpy>=2", "openpyxl>=3.1", "scipy>=1.15"]
 
