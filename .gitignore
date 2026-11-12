@@ -5,3 +5,11 @@ __pycache__/
 
 # Community guide, downloaded by each user (see README)
 Arknights Base Combo Guide.xlsx
+
+# Local environments and build output
+.venv/
+.env
+*.egg-info/
+build/
+dist/
+.DS_Store
