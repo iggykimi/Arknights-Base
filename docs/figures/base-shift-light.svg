@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="572" viewBox="0 0 860 572" role="img" aria-labelledby="title desc" font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif">
+<title id='title'>iggykimi's base, shift A</title>
+<desc id='desc'>Control center: Paprika, Mon3tr, Civilight Eterna, Yahata Umiri, Wiš'adel; Factory 1: Dorothy, Purestream, Spot (Gold +105.0%); Factory 2: Gravel, Haze, Totter (Gold +97.5%); Factory 3: Bena, Bubble, Ceobe (Gold +77.8%); Factory 4: Crownslayer, Tragodia, Vigna (EXP +105.0%); Trading post 1: Mitm, Shamare, Tequila (LMD +120.1%); Trading post 2: Archetto, Closure, Quartz (LMD +126.8%); Power plant 1: Greyy (Drones +25.0%); Power plant 2: Indigo (Drones +20.0%); Power plant 3: Liskarm (Drones +20.0%); Reception room: Typhon, Vigil (Clues +120.0%); HR office: Haruka (Recruiting +60.0%); Training room: Logos; Workshop: Kal'tsit Alter; Dormitory 1: Entelechia, Conviction; Dormitory 2: Durin, Gracebearer; Dormitory 3: Lumen, Saileach; Dormitory 4: Ambriel, Czerny.</desc>
+<rect x="20.75" y="96.75" width="142.5" height="126.5" rx="6" fill="#1f8a70" fill-opacity="0.1" stroke="#1f8a70" stroke-width="1.5"/>
+<text x="32" y="118" font-size="13" fill="#1f2328" font-weight="600">Factory 1</text>
+<text x="32" y="136" font-size="12" fill="#1f2328">Gold +105.0%</text>
+<text x="32" y="154" font-size="12" fill="#59636e">41 gold bars a day</text>
+<text x="32" y="176" font-size="13" fill="#1f2328">Dorothy</text>
+<text x="32" y="194" font-size="13" fill="#1f2328">Purestream</text>
+<text x="32" y="212" font-size="13" fill="#1f2328">Spot</text>
+<rect x="173.75" y="96.75" width="142.5" height="126.5" rx="6" fill="#1f8a70" fill-opacity="0.1" stroke="#1f8a70" stroke-width="1.5"/>
+<text x="185" y="118" font-size="13" fill="#1f2328" font-weight="600">Factory 2</text>
+<text x="185" y="136" font-size="12" fill="#1f2328">Gold +97.5%</text>
+<text x="185" y="154" font-size="12" fill="#59636e">40 gold bars a day</text>
+<text x="185" y="176" font-size="13" fill="#1f2328">Gravel</text>
+<text x="185" y="194" font-size="13" fill="#1f2328">Haze</text>
+<text x="185" y="212" font-size="13" fill="#1f2328">Totter</text>
+<rect x="326.75" y="96.75" width="142.5" height="126.5" rx="6" fill="#1f8a70" fill-opacity="0.1" stroke="#1f8a70" stroke-width="1.5"/>
+<text x="338" y="118" font-size="13" fill="#1f2328" font-weight="600">Factory 3</text>
+<text x="338" y="136" font-size="12" fill="#1f2328">Gold +77.8%</text>
+<text x="338" y="154" font-size="12" fill="#59636e">36 gold bars a day</text>
+<text x="338" y="176" font-size="13" fill="#1f2328">Bena</text>
+<text x="338" y="194" font-size="13" fill="#1f2328">Bubble</text>
+<text x="338" y="212" font-size="13" fill="#1f2328">Ceobe</text>
+<rect x="20.75" y="233.75" width="142.5" height="126.5" rx="6" fill="#5b5bd6" fill-opacity="0.1" stroke="#5b5bd6" stroke-width="1.5"/>
+<text x="32" y="255" font-size="13" fill="#1f2328" font-weight="600">Factory 4</text>
+<text x="32" y="273" font-size="12" fill="#1f2328">EXP +105.0%</text>
+<text x="32" y="291" font-size="12" fill="#59636e">16,400 EXP a day</text>
+<text x="32" y="313" font-size="13" fill="#1f2328">Crownslayer</text>
+<text x="32" y="331" font-size="13" fill="#1f2328">Tragodia</text>
+<text x="32" y="349" font-size="13" fill="#1f2328">Vigna</text>
+<rect x="173.75" y="233.75" width="142.5" height="126.5" rx="6" fill="#1f8a70" fill-opacity="0.1" stroke="#1f8a70" stroke-width="1.5"/>
+<text x="185" y="255" font-size="13" fill="#1f2328" font-weight="600">Trading post 1</text>
+<text x="185" y="273" font-size="12" fill="#1f2328">LMD +120.1%</text>
+<text x="185" y="291" font-size="12" fill="#59636e">22,592 LMD a day</text>
+<text x="185" y="313" font-size="13" fill="#1f2328">Mitm</text>
+<text x="185" y="331" font-size="13" fill="#1f2328">Shamare</text>
+<text x="185" y="349" font-size="13" fill="#1f2328">Tequila</text>
+<rect x="326.75" y="233.75" width="142.5" height="126.5" rx="6" fill="#1f8a70" fill-opacity="0.1" stroke="#1f8a70" stroke-width="1.5"/>
+<text x="338" y="255" font-size="13" fill="#1f2328" font-weight="600">Trading post 2</text>
+<text x="338" y="273" font-size="12" fill="#1f2328">LMD +126.8%</text>
+<text x="338" y="291" font-size="12" fill="#59636e">23,280 LMD a day</text>
+<text x="338" y="313" font-size="13" fill="#1f2328">Archetto</text>
+<text x="338" y="331" font-size="13" fill="#1f2328">Closure</text>
+<text x="338" y="349" font-size="13" fill="#1f2328">Quartz</text>
+<rect x="20.5" y="370.5" width="143" height="127" rx="6" fill="none" stroke="#d1d9e0"/>
+<text x="32" y="392" font-size="13" fill="#1f2328" font-weight="600">Power plant 1</text>
+<text x="32" y="410" font-size="12" fill="#1f2328">Drones +25.0%</text>
+<text x="32" y="432" font-size="13" fill="#1f2328">Greyy</text>
+<rect x="173.5" y="370.5" width="143" height="127" rx="6" fill="none" stroke="#d1d9e0"/>
+<text x="185" y="392" font-size="13" fill="#1f2328" font-weight="600">Power plant 2</text>
+<text x="185" y="410" font-size="12" fill="#1f2328">Drones +20.0%</text>
+<text x="185" y="432" font-size="13" fill="#1f2328">Indigo</text>
+<rect x="326.5" y="370.5" width="143" height="127" rx="6" fill="none" stroke="#d1d9e0"/>
+<text x="338" y="392" font-size="13" fill="#1f2328" font-weight="600">Power plant 3</text>
+<text x="338" y="410" font-size="12" fill="#1f2328">Drones +20.0%</text>
+<text x="338" y="432" font-size="13" fill="#1f2328">Liskarm</text>
+<rect x="486.5" y="96.5" width="179" height="147" rx="6" fill="none" stroke="#d1d9e0"/>
+<text x="498" y="118" font-size="13" fill="#1f2328" font-weight="600">Control center</text>
+<text x="498" y="136" font-size="12" fill="#59636e">Buffs other rooms</text>
+<text x="498" y="158" font-size="13" fill="#1f2328">Paprika</text>
+<text x="498" y="176" font-size="13" fill="#1f2328">Mon3tr</text>
+<text x="498" y="194" font-size="13" fill="#1f2328">Civilight Eterna</text>
+<text x="498" y="212" font-size="13" fill="#1f2328">Yahata Umiri</text>
+<text x="498" y="230" font-size="13" fill="#1f2328">Wiš'adel</text>
+<rect x="486.5" y="253.5" width="179" height="53.5" rx="6" fill="none" stroke="#d1d9e0"/>
+<text x="498" y="275.0" font-size="13" fill="#1f2328" font-weight="600">Dormitory 1</text>
+<text x="654" y="275.0" font-size="12" fill="#59636e" text-anchor="end">+3 resting</text>
+<text x="498" y="295.0" font-size="13" fill="#1f2328">Entelechia, Conviction</text>
+<rect x="486.5" y="317.0" width="179" height="53.5" rx="6" fill="none" stroke="#d1d9e0"/>
+<text x="498" y="338.5" font-size="13" fill="#1f2328" font-weight="600">Dormitory 2</text>
+<text x="654" y="338.5" font-size="12" fill="#59636e" text-anchor="end">+3 resting</text>
+<text x="498" y="358.5" font-size="13" fill="#1f2328">Durin, Gracebearer</text>
+<rect x="486.5" y="380.5" width="179" height="53.5" rx="6" fill="none" stroke="#d1d9e0"/>
+<text x="498" y="402.0" font-size="13" fill="#1f2328" font-weight="600">Dormitory 3</text>
+<text x="654" y="402.0" font-size="12" fill="#59636e" text-anchor="end">+3 resting</text>
+<text x="498" y="422.0" font-size="13" fill="#1f2328">Lumen, Saileach</text>
+<rect x="486.5" y="444.0" width="179" height="53.5" rx="6" fill="none" stroke="#d1d9e0"/>
+<text x="498" y="465.5" font-size="13" fill="#1f2328" font-weight="600">Dormitory 4</text>
+<text x="654" y="465.5" font-size="12" fill="#59636e" text-anchor="end">+3 resting</text>
+<text x="498" y="485.5" font-size="13" fill="#1f2328">Ambriel, Czerny</text>
+<rect x="682.5" y="96.5" width="157" height="92.75" rx="6" fill="none" stroke="#d1d9e0"/>
+<text x="694" y="118.0" font-size="13" fill="#1f2328" font-weight="600">Reception room</text>
+<text x="694" y="136.0" font-size="12" fill="#1f2328">Clues +120.0%</text>
+<text x="694" y="158.0" font-size="13" fill="#1f2328">Typhon</text>
+<text x="694" y="176.0" font-size="13" fill="#1f2328">Vigil</text>
+<rect x="682.5" y="199.25" width="157" height="92.75" rx="6" fill="none" stroke="#d1d9e0"/>
+<text x="694" y="220.75" font-size="13" fill="#1f2328" font-weight="600">HR office</text>
+<text x="694" y="238.75" font-size="12" fill="#1f2328">Recruiting +60.0%</text>
+<text x="694" y="260.75" font-size="13" fill="#1f2328">Haruka</text>
+<rect x="682.5" y="302.0" width="157" height="92.75" rx="6" fill="none" stroke="#d1d9e0"/>
+<text x="694" y="323.5" font-size="13" fill="#1f2328" font-weight="600">Workshop</text>
+<text x="694" y="341.5" font-size="12" fill="#59636e">Crafts materials</text>
+<text x="694" y="363.5" font-size="13" fill="#1f2328">Kal'tsit Alter</text>
+<rect x="682.5" y="404.75" width="157" height="92.75" rx="6" fill="none" stroke="#d1d9e0"/>
+<text x="694" y="426.25" font-size="13" fill="#1f2328" font-weight="600">Training room</text>
+<text x="694" y="444.25" font-size="12" fill="#59636e">Trains skills</text>
+<text x="694" y="466.25" font-size="13" fill="#1f2328">Logos</text>
+<text x="20" y="524" font-size="12" fill="#59636e">Percentages are each room's speed-up from its operators' skills. Gold: 116 bars a day made, 116 sold.</text>
+<text x="20" y="542" font-size="12" fill="#59636e">Power plants make drones recover 65% faster; all drones go to the trading post that earns most.</text>
+<text x="20" y="560" font-size="12" fill="#59636e">Workshop, training room and dormitories stay the same in both shifts. Each dormitory has 5 beds: 2 skilled operators and 3 resting.</text>
+<text x="20" y="30" font-size="16" fill="#1f2328" font-weight="600">iggykimi's base, shift A</text>
+<text x="20" y="52" font-size="13" fill="#59636e">While this shift works the base makes 65,078 LMD and 16,400 EXP a day (drones included).</text>
+<rect x="20.75" y="68.75" width="16" height="12" rx="3" fill="#1f8a70" fill-opacity="0.1" stroke="#1f8a70" stroke-width="1.5"/>
+<text x="42" y="79" font-size="12" fill="#59636e">Gold and LMD</text>
+<rect x="146.75" y="68.75" width="16" height="12" rx="3" fill="#5b5bd6" fill-opacity="0.1" stroke="#5b5bd6" stroke-width="1.5"/>
+<text x="168" y="79" font-size="12" fill="#59636e">EXP</text>
+<rect x="209.75" y="68.75" width="16" height="12" rx="3" fill="none" stroke="#d1d9e0" stroke-width="1.5"/>
+<text x="231" y="79" font-size="12" fill="#59636e">Support</text>
+</svg>

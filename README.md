@@ -21,6 +21,13 @@ team's output depends on who else is in it and on the control center buffs. The 
 make caps the LMD the trading posts can sell. Filling the rooms one at a time with the best team
 left gives a worse plan, so the planner solves both shifts in one integer program.
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/figures/base-shift-dark.svg">
+  <img alt="Schematic of the base as a floor plan: four factories, two trading posts, three power plants, the control center, four dormitories, reception room, HR office, workshop and training room, each with the operators assigned to it in shift A and its bonus and daily output" src="docs/figures/base-shift-light.svg">
+</picture>
+
+Shift A of iggykimi's plan, drawn from [`players/iggykimi/base_plan.md`](players/iggykimi/base_plan.md) by [`scripts/figures.py`](scripts/figures.py).
+
 ## Results
 
 <picture>
@@ -191,7 +198,7 @@ that run only:
   optimiser goes to the extremes.
 
 `python -m riic.promotions <user>` estimates how much the base would gain from promoting each
-operator (takes over an hour). `python scripts/figures.py` rebuilds the chart above.
+operator (takes over an hour). `python scripts/figures.py` rebuilds the figures above.
 
 ## Structure
 
@@ -205,7 +212,7 @@ riic/gamedata.py    game data: names and skills the guide does not list
 riic/model.py       formulas and daily production
 riic/optimize.py    team selection
 riic/promotions.py  python -m riic.promotions <user>: gain from each promotion
-scripts/figures.py  the README chart, optimised plan vs greedy
+scripts/figures.py  the README figures: one shift of a base, optimised plan vs greedy
 tests/              checks against the game, the workbook and the rosters
 ```
 
