@@ -8,14 +8,43 @@ applies; on single-facility sheets it is the sheet itself.
 Simple skills ("+35% Gold (Metalwork)", "+0.7 ST MR", "-0.25 self MD") are parsed
 into numbers. Anything with a condition stays as text and is either modelled by
 hand in ``model.py`` or reported as not modelled.
+
+The workbook is the community's, not part of this repo: download it from
+GUIDE_URL as .xlsx and save it as WORKBOOK, or point $RIIC_WORKBOOK or --excel
+at it.
 """
 
+import os
 import re
 import unicodedata
 from dataclasses import dataclass
 from pathlib import Path
 
 import openpyxl
+
+GUIDE_URL = "https://docs.google.com/spreadsheets/d/1zYc2JU46X0XWmV7s1503bN4feRdOMa1eehrTQ2jGaiE"
+WORKBOOK = Path(
+    os.environ.get("RIIC_WORKBOOK")
+    or Path(__file__).resolve().parent.parent / "Arknights Base Combo Guide.xlsx"
+)
+
+
+def missing_workbook(path: Path) -> str:
+    """Why the workbook is needed and where to get it."""
+    return (
+        f"Guide workbook not found: {path}\n"
+        f"Download the Arknights Base Combo Guide from {GUIDE_URL}\n"
+        "(File > Download > Microsoft Excel (.xlsx)) and save it there, "
+        "or pass --excel PATH or set RIIC_WORKBOOK."
+    )
+
+
+def require_workbook(path: Path) -> Path:
+    """``path`` if it exists; otherwise exit with where to download it."""
+    if not path.is_file():
+        raise SystemExit(missing_workbook(path))
+    return path
+
 
 SKILL_SHEETS = (
     "CC",

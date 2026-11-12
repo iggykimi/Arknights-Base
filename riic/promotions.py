@@ -13,6 +13,7 @@ from pathlib import Path
 
 from . import optimize
 from .__main__ import PLAYERS, player_settings
+from .excel import WORKBOOK, require_workbook
 from .gamedata import all_skills, download, rarities
 from .model import MODELLED, Roster
 from .optimize import Plan, build_plan, plan_value
@@ -84,7 +85,7 @@ def _run(job):
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--excel", type=Path, default=ROOT / "Arknights Base Combo Guide.xlsx")
+    ap.add_argument("--excel", type=Path, default=WORKBOOK, help="guide workbook (.xlsx)")
     ap.add_argument("user", help="a players/ folder")
     ap.add_argument("--cache", type=Path, default=ROOT / ".cache" / "gamedata")
     ap.add_argument("--workers", type=int, default=6, help="12 ran out of memory")
@@ -92,7 +93,7 @@ def main() -> None:
 
     folder = PLAYERS / args.user
     settings = player_settings(folder)
-    skills, names = all_skills(args.excel, args.cache)
+    skills, names = all_skills(require_workbook(args.excel), args.cache)
     stars = rarities(download(args.cache), names)
     r = Roster(load_roster(folder / "roster.json", names), skills)
     out = folder / "promotions.md"

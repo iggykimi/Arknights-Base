@@ -13,6 +13,7 @@ from dataclasses import fields, replace
 from pathlib import Path
 
 from . import krooster
+from .excel import WORKBOOK, require_workbook
 from .gamedata import all_skills
 from .model import (
     EXP_PER_DAY,
@@ -43,7 +44,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("users", nargs="*", help="Krooster users (default: every players/ folder)")
     ap.add_argument("--no-fetch", action="store_true", help="use the saved roster.json")
-    ap.add_argument("--excel", type=Path, default=ROOT / "Arknights Base Combo Guide.xlsx")
+    ap.add_argument("--excel", type=Path, default=WORKBOOK, help="guide workbook (.xlsx)")
     ap.add_argument("--cache", type=Path, default=ROOT / ".cache" / "gamedata")
     # These override players/<user>/settings.json for this run.
     ap.add_argument("--layout", choices=sorted(LAYOUTS))
@@ -52,6 +53,7 @@ def main() -> None:
     ap.add_argument("--gold-facs", type=int, help="fix the Gold FACs per shift")
     args = ap.parse_args()
 
+    require_workbook(args.excel)  # before the downloads, so a missing file fails fast
     users = args.users or sorted(p.name for p in PLAYERS.iterdir() if p.is_dir())
     if not args.no_fetch:  # before the slow part, so a private profile fails fast
         for user in users:

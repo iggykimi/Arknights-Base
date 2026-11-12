@@ -9,7 +9,7 @@ from pathlib import Path
 import pytest
 
 from riic import model
-from riic.excel import extract_skills, norm, operator_ids
+from riic.excel import WORKBOOK, extract_skills, missing_workbook, norm, operator_ids
 from riic.gamedata import (
     ROOMS,
     char_names,
@@ -35,20 +35,25 @@ from riic.optimize import _production, all_assigned, build_plan, plan_value
 from riic.roster import Owned, load_roster
 
 ROOT = Path(__file__).resolve().parent.parent
-
-
-WORKBOOK = ROOT / "Arknights Base Combo Guide.xlsx"
 DATA = ROOT / "tests" / "data"
 
 
 @pytest.fixture(scope="session")
-def guide_skills():
-    return extract_skills(WORKBOOK)
+def workbook():
+    # The guide is not in the repo (see README): everything read from it skips.
+    if not WORKBOOK.is_file():
+        pytest.skip(missing_workbook(WORKBOOK))
+    return WORKBOOK
 
 
 @pytest.fixture(scope="session")
-def game_skills():
-    return load_skills(download(ROOT / ".cache" / "gamedata"), operator_ids(WORKBOOK))
+def guide_skills(workbook):
+    return extract_skills(workbook)
+
+
+@pytest.fixture(scope="session")
+def game_skills(workbook):
+    return load_skills(download(ROOT / ".cache" / "gamedata"), operator_ids(workbook))
 
 
 @pytest.fixture(scope="session")
@@ -57,8 +62,8 @@ def skills(guide_skills, game_skills):
 
 
 @pytest.fixture(scope="session")
-def names():
-    return char_names(download(ROOT / ".cache" / "gamedata"), operator_ids(WORKBOOK))
+def names(workbook):
+    return char_names(download(ROOT / ".cache" / "gamedata"), operator_ids(workbook))
 
 
 @pytest.fixture(scope="session")
@@ -166,12 +171,12 @@ def test_one_spelling_per_operator(skills):
     assert {k: v for k, v in spellings.items() if len(v) > 1} == {}
 
 
-def test_model_matches_game_slots(roster):
+def test_model_matches_game_slots(roster, workbook):
     """For every owned operator, the % the model uses equals the game's: per skill
     slot, the best promotion reached replaces the lower ones and slots add up."""
     folder = download(ROOT / ".cache" / "gamedata")
     building = json.loads((folder / "building_data.json").read_text(encoding="utf-8"))
-    ids = {v: k for k, v in operator_ids(WORKBOOK).items()}
+    ids = {v: k for k, v in operator_ids(workbook).items()}
     wrong, compared = [], 0
     for op, o in roster.owned.items():
         entry = building["chars"].get(ids.get(op, ""))
