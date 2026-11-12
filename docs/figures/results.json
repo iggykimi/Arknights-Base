@@ -1,0 +1,26 @@
+[
+  {
+    "player": "chiro10",
+    "operators": 272,
+    "greedy": {
+      "lmd": 64448,
+      "exp": 7920
+    },
+    "milp": {
+      "lmd": 65043,
+      "exp": 8000
+    }
+  },
+  {
+    "player": "iggykimi",
+    "operators": 293,
+    "greedy": {
+      "lmd": 69592,
+      "exp": 0
+    },
+    "milp": {
+      "lmd": 69856,
+      "exp": 8200
+    }
+  }
+]
