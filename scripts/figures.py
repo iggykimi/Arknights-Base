@@ -224,7 +224,7 @@ def read_plan(path: Path, shift: str) -> dict:
 
 # What each room code is called and makes, in English (base_plan.md is in Spanish).
 ROOM_NAMES = {"CC": "Control center", "FAC": "Factory", "TP": "Trading post",
-              "PP": "Power plant", "RR": "Reception room", "HR": "HR office",
+              "PP": "Power plant", "RR": "Reception", "HR": "HR office",
               "WS": "Workshop", "TR": "Training room", "DORM": "Dormitory"}  # fmt: skip
 PRODUCTS = {"Gold": "Gold", "EXP": "EXP", "LMD": "LMD", "drones": "Drones",
             "pistas": "Clues", "contacto": "Recruiting", "": ""}  # fmt: skip
@@ -240,9 +240,10 @@ def _room_name(code: str) -> str:
 def base_svg(plan: dict, player: str, shift: str, t: dict) -> str:
     """Floor plan of a 2-4-3 base: the 9 build slots on the left, the control center
     and dormitories in the middle, the fixed rooms on the right, each with its team."""
-    w, top, gap = 860, 96, 9
-    cols = {"left": (20, 144), "mid": (486, 180), "right": (682, 158)}
-    block = 3 * 128 + 2 * gap  # height of the three floors of build slots
+    w, top, gap = 880, 112, 10
+    cols = {"left": (20, 156), "mid": (518, 172), "right": (700, 160)}
+    row_h = (136, 136, 96)  # factories, factories and trading posts, power plants
+    block = sum(row_h) + 2 * gap
     rooms = plan["rooms"]
     out = []
 
@@ -257,35 +258,45 @@ def base_svg(plan: dict, player: str, shift: str, t: dict) -> str:
     def room(code, x, y, rw, rh):
         r = rooms[code]
         kind = "exp" if r["product"] == "EXP" else "lmd" if r["product"] in ("Gold", "LMD") else ""
-        if kind:
-            out.append(
-                f'<rect x="{x + 0.75}" y="{y + 0.75}" width="{rw - 1.5}" height="{rh - 1.5}" '
-                f'rx="6" fill="{t[kind]}" fill-opacity="0.1" stroke="{t[kind]}" '
-                'stroke-width="1.5"/>'
-            )
-        else:
-            out.append(
-                f'<rect x="{x + 0.5}" y="{y + 0.5}" width="{rw - 1}" height="{rh - 1}" rx="6" '
-                f'fill="none" stroke="{t["line"]}"/>'
-            )
+        stroke = t[kind] if kind else t["line"]
+        fill = f'fill="{t[kind]}" fill-opacity="0.08"' if kind else 'fill="none"'
+        out.append(
+            f'<rect x="{x + 0.5}" y="{y + 0.5}" width="{rw - 1}" height="{rh - 1}" rx="6" '
+            f'{fill} stroke="{stroke}" stroke-opacity="{0.7 if kind else 1}"/>'
+        )
         tx, ty = x + 12, y + 22
         text(tx, ty, _room_name(code), weight=600)
+        pct = f"+{float(r['pct'].strip('+%')):.0f}%" if r["pct"] else ""
+        if pct:  # the skill bonus, the number the optimiser is pushing up
+            text(x + rw - 12, ty, pct, 13, kind or "text", weight=600, anchor="end")
         if code.startswith("DORM"):
-            text(x + rw - 12, ty, "+3 resting", 12, "muted", anchor="end")
-            text(tx, ty + 20, ", ".join(r["ops"]))
+            text(tx, ty + 19, ", ".join(r["ops"]))
             return
-        lines = []
-        product = PRODUCTS[r["product"]]
-        if product or r["pct"]:
-            lines.append((f"{product} {r['pct']}".strip(), "text"))
+        sub = ""
         if r["per_day"]:
             amount, unit = r["per_day"].split(" ", 1)
-            lines.append((f"{amount} {UNITS[unit]}", "muted"))
-        if code in ROOM_ROLE:
-            lines.append((ROOM_ROLE[code], "muted"))
-        for s, fill in lines:
+            sub = f"{amount} {UNITS[unit]}"
+        elif r["product"]:
+            sub = {
+                "drones": "Drone recovery",
+                "pistas": "Clue search",
+                "contacto": "Recruiting",
+            }.get(r["product"], PRODUCTS[r["product"]])
+        elif code in ROOM_ROLE:
+            sub = ROOM_ROLE[code]
+        if sub:
             ty += 18
-            text(tx, ty, s, 12, fill)
+            text(tx, ty, sub, 12, "muted")
+        if kind and pct:  # bar: bonus on a 0-150% scale
+            bw = rw - 24
+            share = min(float(pct.strip("+%")) / 150, 1)
+            out.append(
+                f'<rect x="{tx}" y="{ty + 9}" width="{bw}" height="4" rx="2" fill="{t["line"]}"/>'
+            )
+            out.append(
+                f'<rect x="{tx}" y="{ty + 9}" width="{bw * share:.1f}" height="4" rx="2" fill="{t[kind]}"/>'
+            )
+            ty += 14
         ty += 4
         for op in r["ops"]:
             ty += 18
@@ -294,33 +305,36 @@ def base_svg(plan: dict, player: str, shift: str, t: dict) -> str:
     # Build slots, laid out so gold flows left to right: factories, then the
     # trading posts that sell it, then the power plants that speed them up.
     x0, rw = cols["left"]
-    for i, row in enumerate((("FAC1", "FAC2", "FAC3"), ("FAC4", "TP1", "TP2"),
-                             ("PP1", "PP2", "PP3"))):  # fmt: skip
+    text(x0, top - 10, "Build slots", 12, "muted")
+    y = top
+    for row, h in zip(
+        (("FAC1", "FAC2", "FAC3"), ("FAC4", "TP1", "TP2"), ("PP1", "PP2", "PP3")), row_h
+    ):
         for j, code in enumerate(row):
-            room(code, x0 + j * (rw + gap), top + i * (128 + gap), rw, 128)
+            room(code, x0 + j * (rw + gap), y, rw, h)
+        y += h + gap
     x0, rw = cols["mid"]
-    cc_h = 148  # five operators
+    text(x0, top - 10, "Control center and dorms", 12, "muted")
+    cc_h = 146
     room("CC", x0, top, rw, cc_h)
     dorms = sorted(c for c in rooms if c.startswith("DORM"))
     dh = (block - cc_h - len(dorms) * gap) / len(dorms)
     for i, code in enumerate(dorms):
         room(code, x0, top + cc_h + gap + i * (dh + gap), rw, dh)
     x0, rw = cols["right"]
+    text(x0, top - 10, "Other rooms", 12, "muted")
     right = ("RR", "HR", "WS", "TR")
     rh = (block - (len(right) - 1) * gap) / len(right)
     for i, code in enumerate(right):
         room(code, x0, top + i * (rh + gap), rw, rh)
 
-    y = top + block + 26
+    y = top + block + 28
     made, sold = (f"{float(g):.0f}" for g in plan["gold"])
-    text(20, y, "Percentages are each room's speed-up from its operators' skills. "
-         f"Gold: {made} bars a day made, {sold} sold.", 12, "muted")  # fmt: skip
-    text(20, y + 18, f"Power plants make drones recover {plan['drones']}% faster; all drones "
-         "go to the trading post that earns most.", 12, "muted")  # fmt: skip
-    text(20, y + 36, "Workshop, training room and dormitories stay the same in both shifts. "
-         "Each dormitory has 5 beds: 2 skilled operators and 3 resting.",
-         12, "muted")  # fmt: skip
-    h = y + 48
+    text(20, y, f"Bars show each room's skill bonus on a 0–150% scale. The factories make {made} gold "
+         f"bars a day and the trading posts sell {sold}.", 12, "muted")  # fmt: skip
+    text(20, y + 18, f"Power plants speed up drones by {plan['drones']}%. Dormitories list the "
+         "two operators whose skills restore morale.", 12, "muted")  # fmt: skip
+    h = y + 30
 
     head = [
         (
@@ -340,18 +354,17 @@ def base_svg(plan: dict, player: str, shift: str, t: dict) -> str:
         + ".</desc>",
     ]
     text(20, 30, f"{player}'s base, shift {shift}", 16, weight=600)
-    text(20, 52, f"While this shift works the base makes {plan['lmd']} LMD and "
+    text(20, 52, f"While this shift works, the base makes {plan['lmd']} LMD and "
          f"{plan['exp']} EXP a day (drones included).", 13, "muted")  # fmt: skip
     lx = 20
     for kind, label in (("lmd", "Gold and LMD"), ("exp", "EXP"), ("", "Support")):
         stroke = t[kind] if kind else t["line"]
-        fill = f'fill="{t[kind]}" fill-opacity="0.1"' if kind else 'fill="none"'
+        fill = f'fill="{t[kind]}" fill-opacity="0.08"' if kind else 'fill="none"'
         out.append(
-            f'<rect x="{lx + 0.75}" y="68.75" width="16" height="12" rx="3" {fill} '
-            f'stroke="{stroke}" stroke-width="1.5"/>'
+            f'<rect x="{lx + 0.5}" y="70.5" width="14" height="10" rx="3" {fill} stroke="{stroke}"/>'
         )
-        text(lx + 22, 79, label, 12, "muted")
-        lx += 22 + 7 * len(label) + 20
+        text(lx + 20, 80, label, 12, "muted")
+        lx += 20 + 7 * len(label) + 18
     return "\n".join([*head, *out, "</svg>"]) + "\n"
 
 
